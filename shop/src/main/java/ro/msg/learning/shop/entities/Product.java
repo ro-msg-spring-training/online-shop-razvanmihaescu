@@ -3,10 +3,8 @@ package ro.msg.learning.shop.entities;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -25,7 +23,11 @@ public class Product {
 
     private Double weight;
 
+    @ManyToOne
     private ProductCategory category;
 
     private String imageUrl;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<Stock> stocks;
 }

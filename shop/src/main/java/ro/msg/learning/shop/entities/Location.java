@@ -3,10 +3,7 @@ package ro.msg.learning.shop.entities;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -19,5 +16,7 @@ public class Location {
 
     private String name;
 
+    @OneToOne
+    @JoinColumn(name = "location_address")
     private Address locationAddress;
 }
