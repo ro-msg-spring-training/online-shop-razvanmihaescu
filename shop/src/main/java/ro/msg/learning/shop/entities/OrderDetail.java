@@ -14,9 +14,9 @@ public class OrderDetail {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @OneToOne()
+    @ManyToOne()
     @JoinColumn(name = "order_id")
-    private Orders orders;
+    private Orders order;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
