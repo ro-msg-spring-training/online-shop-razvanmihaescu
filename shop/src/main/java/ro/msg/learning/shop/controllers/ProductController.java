@@ -1,7 +1,9 @@
 package ro.msg.learning.shop.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ro.msg.learning.shop.dtos.ProductDto;
 import ro.msg.learning.shop.entities.Product;
 import ro.msg.learning.shop.services.product_service.IProductService;
 
@@ -20,22 +22,29 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public Product getProductById(@PathVariable Integer productId) {
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ProductDto getProductById(@PathVariable Integer productId) {
         return productService.getProductById(productId);
     }
 
     @PostMapping
-    public void addProduct(@RequestBody Product product) {
-        productService.createProduct(product);
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ProductDto addProduct(@RequestBody ProductDto productDto) {
+        return productService.createProduct(productDto);
     }
 
     @PutMapping("/{productId}")
-    public void updateProduct(@PathVariable Integer productId, @RequestBody Product product) {
-        productService.updateProduct(productId, product);
+    public void updateProduct(@PathVariable Integer productId, @RequestBody ProductDto productDto) {
+        productService.updateProduct(productId, productDto);
     }
 
     @DeleteMapping("/{productId}")
+    @ResponseStatus(HttpStatus.OK)
     public void deleteProduct(@PathVariable Integer productId) {
         productService.deleteProduct(productId);
     }
+
+
 }

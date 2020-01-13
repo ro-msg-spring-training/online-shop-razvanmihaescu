@@ -1,11 +1,11 @@
-package ro.msg.learning.shop.services.product_category_service;
+package ro.msg.learning.shop.services.productCategory_service;
 
 import ro.msg.learning.shop.entities.ProductCategory;
 
 import java.util.List;
 
 public interface IProductCategoryService {
-    void createProductCategory(ProductCategory productCategory);
+    ProductCategory createProductCategory(ProductCategory productCategory);
 
     void updateProductCategory(Integer id, ProductCategory productCategory);
 
@@ -14,4 +14,8 @@ public interface IProductCategoryService {
     List<ProductCategory> getProductCategorys();
 
     ProductCategory getProductCategoryById(Integer productCategoryId);
+
+    ProductCategory getProductCategoryByName(String productCategoryName);
+
+    ProductCategory save(ProductCategory newCategory);
 }

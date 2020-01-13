@@ -1,4 +1,4 @@
-package ro.msg.learning.shop.services.product_category_service;
+package ro.msg.learning.shop.services.productCategory_service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,6 +6,7 @@ import ro.msg.learning.shop.entities.ProductCategory;
 import ro.msg.learning.shop.repositories.ProductCategoryRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductCategoryService implements IProductCategoryService {
@@ -14,8 +15,8 @@ public class ProductCategoryService implements IProductCategoryService {
     private ProductCategoryRepository productCategoryRepository;
 
     @Override
-    public void createProductCategory(ProductCategory productCategory) {
-
+    public ProductCategory createProductCategory(ProductCategory productCategory) {
+        return productCategoryRepository.save(productCategory);
     }
 
     @Override
@@ -35,7 +36,24 @@ public class ProductCategoryService implements IProductCategoryService {
 
     @Override
     public ProductCategory getProductCategoryById(Integer productCategoryId) {
-    return null;
+        return null;
     }
+
+    @Override
+    public ProductCategory getProductCategoryByName(String productCategoryName) {
+        Optional<ProductCategory> categoryOptional = productCategoryRepository.findByNameEquals(productCategoryName);
+        if (categoryOptional.isPresent()) {
+            return categoryOptional.get();
+        } else {
+            //TODO
+            return null;
+        }
+    }
+
+    @Override
+    public ProductCategory save(ProductCategory newCategory) {
+        return productCategoryRepository.save(newCategory);
+    }
+
 }
 

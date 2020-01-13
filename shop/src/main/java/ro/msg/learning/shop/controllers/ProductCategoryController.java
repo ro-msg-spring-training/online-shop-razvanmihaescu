@@ -1,10 +1,10 @@
 package ro.msg.learning.shop.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ro.msg.learning.shop.entities.ProductCategory;
-import ro.msg.learning.shop.services.product_category_service.IProductCategoryService;
-import ro.msg.learning.shop.services.product_category_service.ProductCategoryService;
+import ro.msg.learning.shop.services.productCategory_service.IProductCategoryService;
 
 import java.util.List;
 
@@ -26,6 +26,7 @@ public class ProductCategoryController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public void addProductCategory(@RequestBody ProductCategory productCategory) {
         productCategoryService.createProductCategory(productCategory);
     }

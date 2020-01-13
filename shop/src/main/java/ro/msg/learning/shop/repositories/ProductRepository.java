@@ -12,8 +12,6 @@ interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query
     Product findProductByProductId(Integer productId);
 
-
-
     @Query
     Product deleteProductByProductId(Integer productId);
 }

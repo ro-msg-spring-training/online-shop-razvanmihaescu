@@ -1,13 +1,13 @@
 package ro.msg.learning.shop.entities;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Data
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 public class ProductCategory {
 

@@ -1,9 +1,6 @@
 package ro.msg.learning.shop.dtos;
 
 import lombok.Data;
-import ro.msg.learning.shop.entities.Stock;
-
-import java.util.List;
 
 @Data
 public class ProductDto {
@@ -17,10 +14,10 @@ public class ProductDto {
 
     private Double weight;
 
-    private ProductCategoryDto category;
+    private String categoryName;
+
+    private String categoryDescription;
 
     private String imageUrl;
-
-    private List<Stock> stocks;
 
 }
