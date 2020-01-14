@@ -11,7 +11,7 @@ public interface IProductCategoryService {
 
     void deleteProductCategory(Integer id);
 
-    List<ProductCategory> getProductCategorys();
+    List<ProductCategory> getProductCategory();
 
     ProductCategory getProductCategoryById(Integer productCategoryId);
 

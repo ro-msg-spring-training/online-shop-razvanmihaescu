@@ -12,7 +12,7 @@ public interface IProductService {
 
     void deleteProduct(Integer id);
 
-    List<Product> getProducts();
+    List<ProductDto> getProducts();
 
     ProductDto getProductById(Integer productId);
 }

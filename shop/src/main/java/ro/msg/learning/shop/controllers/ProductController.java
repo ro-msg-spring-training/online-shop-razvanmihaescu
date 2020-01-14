@@ -17,7 +17,7 @@ public class ProductController {
     private IProductService productService;
 
     @GetMapping
-    public List<Product> getAllProducts() {
+    public List<ProductDto> getAllProducts() {
         return productService.getProducts();
     }
 
@@ -36,6 +36,7 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
+    @ResponseStatus(HttpStatus.OK)
     public void updateProduct(@PathVariable Integer productId, @RequestBody ProductDto productDto) {
         productService.updateProduct(productId, productDto);
     }

@@ -3,7 +3,7 @@ package ro.msg.learning.shop.services.productCategory_service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.entities.ProductCategory;
-import ro.msg.learning.shop.repositories.ProductCategoryRepository;
+import ro.msg.learning.shop.repositories.IProductCategoryRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +12,7 @@ import java.util.Optional;
 public class ProductCategoryService implements IProductCategoryService {
 
     @Autowired
-    private ProductCategoryRepository productCategoryRepository;
+    private IProductCategoryRepository productCategoryRepository;
 
     @Override
     public ProductCategory createProductCategory(ProductCategory productCategory) {
@@ -30,7 +30,7 @@ public class ProductCategoryService implements IProductCategoryService {
     }
 
     @Override
-    public List<ProductCategory> getProductCategorys() {
+    public List<ProductCategory> getProductCategory() {
         return null;
     }
 

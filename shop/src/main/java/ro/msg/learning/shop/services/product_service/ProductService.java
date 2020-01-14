@@ -7,17 +7,20 @@ import ro.msg.learning.shop.dtos.ProductDto;
 import ro.msg.learning.shop.entities.Product;
 import ro.msg.learning.shop.entities.ProductCategory;
 import ro.msg.learning.shop.exceptions.MyException;
-import ro.msg.learning.shop.repositories.ProductRepository;
+import ro.msg.learning.shop.exceptions.ProductNotFoundException;
+import ro.msg.learning.shop.repositories.IProductRepository;
 import ro.msg.learning.shop.services.productCategory_service.IProductCategoryService;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService implements IProductService {
 
     @Autowired
-    private ProductRepository productRepository;
+    private IProductRepository productRepository;
     @Autowired
     private ModelMapper modelMapper;
     @Autowired
@@ -26,13 +29,55 @@ public class ProductService implements IProductService {
     @Override
     public ProductDto createProduct(ProductDto productDto) {
 
-        Product newProduct;
+        Product newProduct = null;
         try {
-            newProduct = convertToEntity(productDto);
+            newProduct = convertToEntityAndCheckCategory(productDto);
         } catch (ParseException e) {
             System.out.println(e.getLocalizedMessage());
             throw new MyException();
         }
+        return convertToDto(productRepository.save(newProduct));
+    }
+
+    @Override
+    public void updateProduct(Integer id, ProductDto productDto) {
+        Product product;
+        try {
+            product = convertToEntityAndCheckCategory(productDto);
+            product.setProductId(id);
+            productRepository.save(product);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteProduct(Integer id) {
+        productRepository.deleteById(id);
+    }
+
+    @Override
+    public List<ProductDto> getProducts() {
+        List<Product> posts = productRepository.findAll();
+        return posts.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public ProductDto getProductById(Integer productId) {
+        Optional<Product> productOptional = productRepository.findById(productId);
+        if (productOptional.isPresent()) {
+            return convertToDto(productOptional.get());
+        } else throw new ProductNotFoundException(productId);
+    }
+
+    private ProductDto convertToDto(Product product) {
+        return modelMapper.map(product, ProductDto.class);
+    }
+
+    private Product convertToEntityAndCheckCategory(ProductDto productDto) throws ParseException {
+        Product newProduct = modelMapper.map(productDto, Product.class);
 
         ProductCategory productCategory = productCategoryService.getProductCategoryByName(productDto.getCategoryName());
 
@@ -40,42 +85,12 @@ public class ProductService implements IProductService {
             newProduct.setCategory(productCategory);
         } else {
             ProductCategory newCategory = new ProductCategory();
-            newCategory.setName(productDto.getName());
-            newCategory.setDescription(productDto.getDescription());
+            newCategory.setName(productDto.getCategoryName());
+            newCategory.setDescription(productDto.getCategoryDescription());
 
-            ProductCategory newPersistedCategory = productCategoryService.createProductCategory(newCategory);
-            newProduct.setCategory(newPersistedCategory);
+            ProductCategory persistedCategory = productCategoryService.createProductCategory(newCategory);
+            newProduct.setCategory(persistedCategory);
         }
-
-        return convertToDto(productRepository.save(newProduct));
-    }
-
-    @Override
-    public void updateProduct(Integer id, ProductDto productDto) {
-
-    }
-
-    @Override
-    public void deleteProduct(Integer id) {
-        productRepository.deleteProductByProductId(id);
-    }
-
-    @Override
-    public List<Product> getProducts() {
-        return null;
-    }
-
-    @Override
-    public ProductDto getProductById(Integer productId) {
-        Product selectedProduct = productRepository.findProductByProductId(productId);
-        return convertToDto(selectedProduct);
-    }
-
-    private ProductDto convertToDto(Product product) {
-        return modelMapper.map(product, ProductDto.class);
-    }
-
-    private Product convertToEntity(ProductDto productDto) throws ParseException {
-        return modelMapper.map(productDto, Product.class);
+        return newProduct;
     }
 }

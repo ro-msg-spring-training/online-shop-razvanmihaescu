@@ -3,14 +3,14 @@ package ro.msg.learning.shop.services.order_service;
 import org.springframework.beans.factory.annotation.Autowired;
 import ro.msg.learning.shop.entities.Orders;
 import ro.msg.learning.shop.exceptions.MyException;
-import ro.msg.learning.shop.repositories.OrdersRepository;
+import ro.msg.learning.shop.repositories.IOrdersRepository;
 
 import java.util.Optional;
 
 public class OrderService implements IOrderService{
 
     @Autowired
-    OrdersRepository ordersRepository;
+    IOrdersRepository ordersRepository;
 
     @Override
     public Orders createOrder(Orders order) {
