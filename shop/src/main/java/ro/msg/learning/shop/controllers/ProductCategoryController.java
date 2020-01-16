@@ -17,7 +17,7 @@ public class ProductCategoryController {
 
     @GetMapping
     public List<ProductCategory> getAllProductCategorys() {
-        return productCategoryService.getProductCategory();
+        return productCategoryService.getProductCategories();
     }
 
     @GetMapping("/{productCategoryId}")

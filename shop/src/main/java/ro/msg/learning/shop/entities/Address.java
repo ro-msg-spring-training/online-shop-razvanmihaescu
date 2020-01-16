@@ -21,4 +21,7 @@ public class Address {
     private String county;
 
     private String streetAddress;
+
+    @OneToOne
+    private Order orders;
 }

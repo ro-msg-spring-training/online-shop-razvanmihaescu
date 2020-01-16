@@ -29,5 +29,5 @@ public class User {
     private Roles roles;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private List<Orders> orders;
+    private List<Order> orders;
 }

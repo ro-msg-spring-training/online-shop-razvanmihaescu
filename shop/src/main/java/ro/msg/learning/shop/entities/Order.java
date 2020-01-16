@@ -5,11 +5,13 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @Entity
-public class Orders {
+@Table(name = "orders")
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,7 +26,9 @@ public class Orders {
 
     private LocalDateTime createdAt;
 
-    @OneToOne
-    @JoinColumn(name = "delivery_address_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
     private Address deliveryAddress;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderDetail> orderDetail;
 }

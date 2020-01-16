@@ -3,6 +3,7 @@ package ro.msg.learning.shop.services.product_service;
 import ro.msg.learning.shop.dtos.ProductDto;
 import ro.msg.learning.shop.entities.Product;
 
+import java.text.ParseException;
 import java.util.List;
 
 public interface IProductService {
@@ -15,4 +16,8 @@ public interface IProductService {
     List<ProductDto> getProducts();
 
     ProductDto getProductById(Integer productId);
+
+    ProductDto convertToDto(Product product);
+
+    Product convertToEntityAndCheckCategory(ProductDto productDto) throws ParseException;
 }

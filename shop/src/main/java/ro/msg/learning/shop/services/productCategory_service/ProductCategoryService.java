@@ -26,34 +26,23 @@ public class ProductCategoryService implements IProductCategoryService {
 
     @Override
     public void deleteProductCategory(Integer id) {
-
+    productCategoryRepository.deleteById(id);
     }
 
     @Override
-    public List<ProductCategory> getProductCategory() {
-        return null;
+    public List<ProductCategory> getProductCategories() {
+        return productCategoryRepository.findAll();
     }
 
     @Override
     public ProductCategory getProductCategoryById(Integer productCategoryId) {
-        return null;
+        return productCategoryRepository.getOne(productCategoryId);
     }
 
     @Override
     public ProductCategory getProductCategoryByName(String productCategoryName) {
         Optional<ProductCategory> categoryOptional = productCategoryRepository.findByNameEquals(productCategoryName);
-        if (categoryOptional.isPresent()) {
-            return categoryOptional.get();
-        } else {
-            //TODO
-            return null;
-        }
+        return categoryOptional.orElse(null);
     }
-
-    @Override
-    public ProductCategory save(ProductCategory newCategory) {
-        return productCategoryRepository.save(newCategory);
-    }
-
 }
 

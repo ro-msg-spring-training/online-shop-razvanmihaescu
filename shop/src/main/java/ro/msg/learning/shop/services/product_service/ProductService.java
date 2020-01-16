@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.dtos.ProductDto;
 import ro.msg.learning.shop.entities.Product;
 import ro.msg.learning.shop.entities.ProductCategory;
-import ro.msg.learning.shop.exceptions.MyException;
+import ro.msg.learning.shop.exceptions.OrderNotFoundException;
 import ro.msg.learning.shop.exceptions.ProductNotFoundException;
 import ro.msg.learning.shop.repositories.IProductRepository;
 import ro.msg.learning.shop.services.productCategory_service.IProductCategoryService;
@@ -33,8 +33,7 @@ public class ProductService implements IProductService {
         try {
             newProduct = convertToEntityAndCheckCategory(productDto);
         } catch (ParseException e) {
-            System.out.println(e.getLocalizedMessage());
-            throw new MyException();
+
         }
         return convertToDto(productRepository.save(newProduct));
     }
@@ -47,7 +46,7 @@ public class ProductService implements IProductService {
             product.setProductId(id);
             productRepository.save(product);
         } catch (ParseException e) {
-            e.printStackTrace();
+            System.out.println(e.getLocalizedMessage());
         }
     }
 
@@ -72,11 +71,11 @@ public class ProductService implements IProductService {
         } else throw new ProductNotFoundException(productId);
     }
 
-    private ProductDto convertToDto(Product product) {
+    public ProductDto convertToDto(Product product) {
         return modelMapper.map(product, ProductDto.class);
     }
 
-    private Product convertToEntityAndCheckCategory(ProductDto productDto) throws ParseException {
+    public Product convertToEntityAndCheckCategory(ProductDto productDto) throws ParseException {
         Product newProduct = modelMapper.map(productDto, Product.class);
 
         ProductCategory productCategory = productCategoryService.getProductCategoryByName(productDto.getCategoryName());

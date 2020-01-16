@@ -11,11 +11,9 @@ public interface IProductCategoryService {
 
     void deleteProductCategory(Integer id);
 
-    List<ProductCategory> getProductCategory();
+    List<ProductCategory> getProductCategories();
 
     ProductCategory getProductCategoryById(Integer productCategoryId);
 
     ProductCategory getProductCategoryByName(String productCategoryName);
-
-    ProductCategory save(ProductCategory newCategory);
 }

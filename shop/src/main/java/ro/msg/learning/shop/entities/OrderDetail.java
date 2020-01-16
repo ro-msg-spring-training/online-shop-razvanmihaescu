@@ -14,13 +14,10 @@ public class OrderDetail {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @ManyToOne()
-    @JoinColumn(name = "order_id")
-    private Orders order;
-
     @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    private Order order;
+
+    private Integer productId;
 
     private Integer quantity;
 }
