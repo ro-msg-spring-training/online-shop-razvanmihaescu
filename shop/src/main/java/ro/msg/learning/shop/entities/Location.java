@@ -1,5 +1,7 @@
 package ro.msg.learning.shop.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +10,8 @@ import javax.persistence.*;
 @Data
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Location {
 
     @Id
@@ -16,7 +20,6 @@ public class Location {
 
     private String name;
 
-    @OneToOne
-    @JoinColumn(name = "location_address")
-    private Address locationAddress;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Address address;
 }

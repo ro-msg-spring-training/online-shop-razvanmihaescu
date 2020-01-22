@@ -5,8 +5,9 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ProductCategoryDto {
+public class LocationDto {
+
     private String name;
 
-    private String description;
+    private AddressDto address;
 }

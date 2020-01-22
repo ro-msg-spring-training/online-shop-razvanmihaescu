@@ -1,5 +1,7 @@
 package ro.msg.learning.shop.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +10,8 @@ import javax.persistence.*;
 @Data
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Address {
 
     @Id
@@ -20,8 +24,5 @@ public class Address {
 
     private String county;
 
-    private String streetAddress;
-
-    @OneToOne
-    private Order orders;
+    private String street;
 }

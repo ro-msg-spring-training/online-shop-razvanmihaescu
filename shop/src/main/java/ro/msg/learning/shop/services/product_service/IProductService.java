@@ -17,7 +17,5 @@ public interface IProductService {
 
     ProductDto getProductById(Integer productId);
 
-    ProductDto convertToDto(Product product);
-
-    Product convertToEntityAndCheckCategory(ProductDto productDto) throws ParseException;
+    Product callMapperAndCheckCategory(ProductDto productDto);
 }

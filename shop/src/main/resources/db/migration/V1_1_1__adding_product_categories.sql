@@ -1,0 +1,10 @@
+insert into product_category (id, description, name) values (1, 'Venereal disease NEC', 'Real Estate Investment Trusts');
+insert into product_category (id, description, name) values (2, 'Disloc metacarpophaln-cl', 'Integrated oil Companies');
+insert into product_category (id, description, name) values (3, 'Simple microphthalmos', 'Services-Misc. Amusement & Recreation');
+insert into product_category (id, description, name) values (4, 'Carbuncle of trunk', 'Real Estate Investment Trusts');
+insert into product_category (id, description, name) values (5, 'Dislocation jaw-closed', 'n/a');
+insert into product_category (id, description, name) values (6, 'Soft tissue disorder NEC', 'Major Banks');
+insert into product_category (id, description, name) values (7, 'Open wound of palate', 'n/a');
+insert into product_category (id, description, name) values (8, 'Inf mcrg rstn oth drg ml', 'Oil & Gas Production');
+insert into product_category (id, description, name) values (9, 'Abn ftl hrt rate/rhy-uns', 'Specialty Chemicals');
+insert into product_category (id, description, name) values (10, 'Opn brain lac-brief coma', 'Multi-Sector Companies');

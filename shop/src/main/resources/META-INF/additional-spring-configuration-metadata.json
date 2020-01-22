@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "delivery_strategy",
+      "type": "ro.msg.learning.shop.configuration.StrategiesEnum",
+      "description": "Description for delivery_strategy."
+  }
+] }

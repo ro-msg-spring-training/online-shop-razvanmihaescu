@@ -5,10 +5,11 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.List;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
+@Builder
 public class ProductCategory {
 
     @Id

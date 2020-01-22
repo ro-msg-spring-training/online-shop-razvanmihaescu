@@ -1,5 +1,7 @@
 package ro.msg.learning.shop.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,16 +11,17 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "orders")
+@Builder
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @OneToOne
-    @JoinColumn(name = "shipped_from_id", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL)
     private Location shippedFrom;
 
     @ManyToOne
@@ -26,8 +29,8 @@ public class Order {
 
     private LocalDateTime createdAt;
 
-    @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
-    private Address deliveryAddress;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Location deliveryLocation;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderDetail> orderDetail;
