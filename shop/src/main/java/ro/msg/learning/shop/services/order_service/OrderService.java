@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.configuration.IDeliveryStrategy;
 import ro.msg.learning.shop.dtos.OrderDetailDto;
 import ro.msg.learning.shop.dtos.OrderDto;
+import ro.msg.learning.shop.dtos.StockDto;
 import ro.msg.learning.shop.entities.Address;
 import ro.msg.learning.shop.entities.Location;
 import ro.msg.learning.shop.entities.Order;
@@ -56,7 +57,6 @@ public class OrderService implements IOrderService {
                 .address(address)
                 .build();
 
-        deliveryStrategy.doAlgorithm();//TODO strategy algorithm
 
         try {
             Order newOrder = orderMapper.convertToEntity(orderDto);
@@ -67,7 +67,7 @@ public class OrderService implements IOrderService {
                 orderDetail.setId(null);//avoiding Generation ID override
                 orderDetail.setOrder(newOrder);
             });
-
+            List<StockDto> stockDtoList = deliveryStrategy.doAlgorithm(orderDetails);//TODO strategy algorithm
             newOrder.setOrderDetail(orderDetails);
             newOrder.setDeliveryLocation(location);
             newOrder.setCreatedAt(LocalDateTime.now());

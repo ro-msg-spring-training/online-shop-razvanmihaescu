@@ -17,7 +17,10 @@ public class AddressMapper {
 
     public Address convertToEntity(AddressDto addressDto) {
         return Address.builder()
-
+                .city(addressDto.getCity())
+                .country(addressDto.getCountry())
+                .county(addressDto.getCounty())
+                .street(addressDto.getStreet())
                 .build();
     }
 }

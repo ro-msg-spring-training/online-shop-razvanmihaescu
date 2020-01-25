@@ -13,7 +13,8 @@ import java.util.List;
 public class ProductCategory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @TableGenerator(name = "mySeqGen", initialValue = 10, allocationSize = 100)
+    @GeneratedValue(generator = "mySeqGen")
     private Integer id;
 
     private String name;
