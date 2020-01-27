@@ -16,7 +16,8 @@ import java.time.LocalDate;
 public class Revenue {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true)
     private Integer id;
 
     @ManyToOne

@@ -12,14 +12,14 @@ public class LocationMapper {
 
     public LocationDto convertToDto(Location location) {
         return LocationDto.builder()
-                .address(addressMapper.convertToDto(location.getAddress()))
+                .addressDto(addressMapper.convertToDto(location.getAddress()))
                 .name(location.getName())
                 .build();
     }
 
     public Location convertToEntity(LocationDto locationDto) {
         return Location.builder()
-                .address(addressMapper.convertToEntity(locationDto.getAddress()))
+                .address(addressMapper.convertToEntity(locationDto.getAddressDto()))
                 .name(locationDto.getName())
                 .build();
     }

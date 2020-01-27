@@ -1,6 +1,6 @@
 insert into stock (id, quantity, location_id, product_product_id) values (1, 56, 3, 1);
 insert into stock (id, quantity, location_id, product_product_id) values (2, 11, 3, 2);
-insert into stock (id, quantity, location_id, product_product_id) values (3, 82, 5, 3);
+insert into stock (id, quantity, location_id, product_product_id) values (3, 82, 3, 3);
 insert into stock (id, quantity, location_id, product_product_id) values (4, 2, 5, 4);
 insert into stock (id, quantity, location_id, product_product_id) values (5, 80, 3, 5);
 insert into stock (id, quantity, location_id, product_product_id) values (6, 5, 2, 6);

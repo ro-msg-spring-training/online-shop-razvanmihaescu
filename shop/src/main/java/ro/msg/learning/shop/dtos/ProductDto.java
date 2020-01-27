@@ -1,5 +1,6 @@
 package ro.msg.learning.shop.dtos;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,9 +15,8 @@ public class ProductDto {
 
     private Double weight;
 
-    private String categoryName;
-
-    private String categoryDescription;
+    @JsonAlias("category")
+    private ProductCategoryDto productCategoryDto;
 
     private String imageUrl;
 

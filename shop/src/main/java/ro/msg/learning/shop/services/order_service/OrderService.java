@@ -6,16 +6,15 @@ import ro.msg.learning.shop.configuration.IDeliveryStrategy;
 import ro.msg.learning.shop.dtos.OrderDetailDto;
 import ro.msg.learning.shop.dtos.OrderDto;
 import ro.msg.learning.shop.dtos.StockDto;
-import ro.msg.learning.shop.entities.Address;
-import ro.msg.learning.shop.entities.Location;
-import ro.msg.learning.shop.entities.Order;
-import ro.msg.learning.shop.entities.OrderDetail;
+import ro.msg.learning.shop.entities.*;
 import ro.msg.learning.shop.exceptions.OrderCouldNotBeCreated;
 import ro.msg.learning.shop.exceptions.OrderNotFoundException;
-import ro.msg.learning.shop.mappers.OrderDetailMapper;
 import ro.msg.learning.shop.mappers.OrderMapper;
 import ro.msg.learning.shop.repositories.IOrderRepository;
+import ro.msg.learning.shop.repositories.IStockRepository;
+import ro.msg.learning.shop.services.location_service.ILocationService;
 import ro.msg.learning.shop.services.orderDetail_service.IOrderDetailService;
+import ro.msg.learning.shop.services.product_service.ProductService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,13 +25,10 @@ import java.util.stream.Collectors;
 public class OrderService implements IOrderService {
 
     @Autowired
-    IOrderRepository ordersRepository;
+    IOrderRepository orderRepository;
 
     @Autowired
     OrderMapper orderMapper;
-
-    @Autowired
-    OrderDetailMapper orderDetailMapper;
 
     @Autowired
     IOrderDetailService orderDetailService;
@@ -40,9 +36,18 @@ public class OrderService implements IOrderService {
     @Autowired
     IDeliveryStrategy deliveryStrategy;
 
+    @Autowired
+    IStockRepository stockRepository;
+
+    @Autowired
+    ILocationService locationService;
+
+    @Autowired
+    ProductService productService;
+
     @Override
     public OrderDto createOrder(OrderDto orderDto) {
-        Order persistedOrder = null;
+        Order persistedOrder;
 
         Address address = Address.builder()
                 .country(orderDto.getDeliveryLocation().getCountry())
@@ -53,39 +58,52 @@ public class OrderService implements IOrderService {
 
 
         Location location = Location.builder()
-                .name("Numele locatiei")
+                .name("Adresa lui USERNAME")
                 .address(address)
                 .build();
 
-
         try {
-            Order newOrder = orderMapper.convertToEntity(orderDto);
-            List<OrderDetailDto> orderDetailDtos = orderDto.getOrderDetail();
-            List<OrderDetail> orderDetails = orderDetailDtos.stream().map(a -> orderDetailMapper.convertToEntity(a)).collect(Collectors.toList());
+            Order newOrder = this.convertToEntity(orderDto);
+            List<OrderDetailDto> orderDetailDtos = orderDto.getOrderDetailDtos();
+            List<OrderDetail> orderDetails = orderDetailDtos.stream().map(a -> orderDetailService.convertToEntity(a)).collect(Collectors.toList());
 
-            orderDetails.forEach(orderDetail -> {
-                orderDetail.setId(null);//avoiding Generation ID override
-                orderDetail.setOrder(newOrder);
-            });
+            orderDetails.forEach(orderDetail -> orderDetail.setOrder(newOrder));
             List<StockDto> stockDtoList = deliveryStrategy.doAlgorithm(orderDetails);//TODO strategy algorithm
             newOrder.setOrderDetail(orderDetails);
             newOrder.setDeliveryLocation(location);
             newOrder.setCreatedAt(LocalDateTime.now());
-            persistedOrder = ordersRepository.save(newOrder);
+            persistedOrder = orderRepository.save(newOrder);
 
+            stockDtoList.forEach(a -> {
+                Optional<Stock> stockOptional = stockRepository.findByLocation_NameAndProduct_Name(a.getLocationDto().getName(), a.getProductDto().getProductName());
+                Integer newQuantity = stockOptional.get().getQuantity() - a.getQuantity();
+                stockOptional.get().setQuantity(newQuantity);
+                stockRepository.save(stockOptional.get());
+            });
         } catch (RuntimeException e) {
-            throw new OrderCouldNotBeCreated();
+            throw new OrderCouldNotBeCreated(e.getMessage());
         }
-        return orderMapper.convertToDto(persistedOrder);
+
+        return this.convertToDto(persistedOrder);
     }
 
     @Override
     public OrderDto getOrderById(Integer id) {
-        Optional<Order> orderOptional = ordersRepository.findById(id);
+        Optional<Order> orderOptional = orderRepository.findById(id);
         if (orderOptional.isPresent()) {
-            return orderMapper.convertToDto(orderOptional.get());
+            return this.convertToDto(orderOptional.get());
         } else {
             throw new OrderNotFoundException(id);
         }
+    }
+
+    @Override
+    public OrderDto convertToDto(Order order) {
+        return orderMapper.convertToDto(order);
+    }
+
+    @Override
+    public Order convertToEntity(OrderDto orderDto) {
+        return orderMapper.convertToEntity(orderDto);
     }
 }

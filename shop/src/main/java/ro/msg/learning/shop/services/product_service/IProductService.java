@@ -17,4 +17,8 @@ public interface IProductService {
     ProductDto getProductById(Integer productId);
 
     Product callMapperAndCheckCategory(ProductDto productDto);
+
+    ProductDto convertToDto(Product product);
+
+    Product convertToEntity(ProductDto productDto);
 }

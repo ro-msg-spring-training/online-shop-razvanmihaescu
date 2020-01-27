@@ -19,17 +19,19 @@ public class ProductService implements IProductService {
 
     @Autowired
     private IProductRepository productRepository;
+
     @Autowired
     private ProductMapper productMapper;
+
     @Autowired
     private IProductCategoryService productCategoryService;
 
     @Override
     public ProductDto createProduct(ProductDto productDto) {
 
-        Product newProduct = null;
+        Product newProduct;
         newProduct = callMapperAndCheckCategory(productDto);
-        return productMapper.convertToDto(productRepository.save(newProduct));
+        return convertToDto(productRepository.save(newProduct));
     }
 
     @Override
@@ -49,7 +51,7 @@ public class ProductService implements IProductService {
     public List<ProductDto> getProducts() {
         List<Product> posts = productRepository.findAll();
         return posts.stream()
-                .map(a -> productMapper.convertToDto(a))
+                .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
@@ -57,26 +59,36 @@ public class ProductService implements IProductService {
     public ProductDto getProductById(Integer productId) {
         Optional<Product> productOptional = productRepository.findById(productId);
         if (productOptional.isPresent()) {
-            return productMapper.convertToDto(productOptional.get());
+            return convertToDto(productOptional.get());
         } else throw new ProductNotFoundException(productId);
     }
 
 
     public Product callMapperAndCheckCategory(ProductDto productDto) {
-        Product newProduct = productMapper.convertToEntity(productDto);
+        Product newProduct = convertToEntity(productDto);
 
-        ProductCategory productCategory = productCategoryService.getProductCategoryByName(productDto.getCategoryName());
+        ProductCategory productCategory = productCategoryService.getProductCategoryByName(productDto.getProductCategoryDto().getName());
 
         if (productCategory != null) {
             newProduct.setCategory(productCategory);
         } else {
             ProductCategory newCategory = new ProductCategory();
-            newCategory.setName(productDto.getCategoryName());
-            newCategory.setDescription(productDto.getCategoryDescription());
+            newCategory.setName(productDto.getProductCategoryDto().getName());
+            newCategory.setDescription(productDto.getProductCategoryDto().getDescription());
 
             ProductCategory persistedCategory = productCategoryService.createProductCategory(newCategory);
             newProduct.setCategory(persistedCategory);
         }
         return newProduct;
+    }
+
+    @Override
+    public ProductDto convertToDto(Product product) {
+        return productMapper.convertToDto(product);
+    }
+
+    @Override
+    public Product convertToEntity(ProductDto productDto) {
+        return productMapper.convertToEntity(productDto);
     }
 }

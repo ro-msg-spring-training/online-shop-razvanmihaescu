@@ -14,5 +14,6 @@ public class OrderDto {
     @JsonAlias(value = "address")
     private AddressDto deliveryLocation;
 
-    private List<OrderDetailDto> orderDetail;
+    @JsonAlias(value = "orderDetail")
+    private List<OrderDetailDto> orderDetailDtos;
 }

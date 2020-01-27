@@ -16,17 +16,17 @@ public class StockMapper {
 
     public StockDto convertToDto(Stock stock) {
         return StockDto.builder()
-                .location(locationMapper.convertToDto(stock.getLocation()))
-                .product(productMapper.convertToDto(stock.getProduct()))
+                .locationDto(locationMapper.convertToDto(stock.getLocation()))
                 .quantity(stock.getQuantity())
+                .productDto(productMapper.convertToDto(stock.getProduct()))
                 .build();
     }
 
     public Stock convertToEntity(StockDto stockDto) {
         return Stock.builder()
-                .location(locationMapper.convertToEntity(stockDto.getLocation()))
-                .product(productMapper.convertToEntity(stockDto.getProduct()))
+                .location(locationMapper.convertToEntity(stockDto.getLocationDto()))
                 .quantity(stockDto.getQuantity())
+                .product(productMapper.convertToEntity(stockDto.getProductDto()))
                 .build();
     }
 }

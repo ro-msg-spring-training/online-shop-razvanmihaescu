@@ -9,5 +9,5 @@ public class LocationDto {
 
     private String name;
 
-    private AddressDto address;
+    private AddressDto addressDto;
 }

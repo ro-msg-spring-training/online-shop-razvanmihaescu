@@ -1,7 +1,7 @@
 package ro.msg.learning.shop.exceptions;
 
 public class OrderCouldNotBeCreated extends RuntimeException {
-    public OrderCouldNotBeCreated() {
-        super("Sorry, the order couldn't be created!");
+    public OrderCouldNotBeCreated(String message) {
+        super("Sorry, the order couldn't be created! Error message: "+message);
     }
 }
