@@ -10,8 +10,12 @@ insert into address (id, city, country, county, street) values (9, 'Kuasha', 'Ch
 insert into address (id, city, country, county, street) values (10, 'Manuel Antonio Mesones Muro', 'Peru', 'PE', '027 Arkansas Point');
 
 insert into location (id, address_id, name) values (1, 1, 'Shop 1 Location');
-insert into location (id, address_id, name) values (2, 1, 'Shop 2 Location');
-insert into location (id, address_id, name) values (3, 2, 'Shop 3 Location');
-insert into location (id, address_id, name) values (4, 2, 'Shop 4 Location');
-insert into location (id, address_id, name) values (5, 3, 'Shop 5 Location');
-insert into location (id, address_id, name) values (6, 4, 'Shop 6 Location');
+insert into location (id, address_id, name) values (2, 2, 'Shop 2 Location');
+insert into location (id, address_id, name) values (3, 3, 'Shop 3 Location');
+insert into location (id, address_id, name) values (4, 4, 'Shop 4 Location');
+insert into location (id, address_id, name) values (5, 10, 'Shop 5 Location');
+insert into location (id, address_id, name) values (6, 5, 'Shop 1 Location');
+insert into location (id, address_id, name) values (7, 9, 'Shop 2 Location');
+insert into location (id, address_id, name) values (8, 7, 'Shop 3 Location');
+insert into location (id, address_id, name) values (9, 6, 'Shop 4 Location');
+insert into location (id, address_id, name) values (10, 8, 'Shop 5 Location');

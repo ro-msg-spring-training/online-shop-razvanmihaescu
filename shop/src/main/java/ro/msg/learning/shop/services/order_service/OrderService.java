@@ -68,7 +68,7 @@ public class OrderService implements IOrderService {
             List<OrderDetail> orderDetails = orderDetailDtos.stream().map(a -> orderDetailService.convertToEntity(a)).collect(Collectors.toList());
 
             orderDetails.forEach(orderDetail -> orderDetail.setOrder(newOrder));
-            List<StockDto> stockDtoList = deliveryStrategy.doAlgorithm(orderDetails);//TODO strategy algorithm
+            List<StockDto> stockDtoList = deliveryStrategy.doAlgorithm(orderDetails);//TODO IMPROVE strategy algorithm
             newOrder.setOrderDetail(orderDetails);
             newOrder.setDeliveryLocation(location);
             newOrder.setCreatedAt(LocalDateTime.now());

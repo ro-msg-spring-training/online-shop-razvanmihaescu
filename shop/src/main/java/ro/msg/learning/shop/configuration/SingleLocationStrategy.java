@@ -6,6 +6,7 @@ import ro.msg.learning.shop.dtos.StockDto;
 import ro.msg.learning.shop.entities.Location;
 import ro.msg.learning.shop.entities.OrderDetail;
 import ro.msg.learning.shop.entities.Stock;
+import ro.msg.learning.shop.exceptions.ProductsNotAvailableException;
 import ro.msg.learning.shop.mappers.OrderDetailMapper;
 import ro.msg.learning.shop.mappers.ProductMapper;
 import ro.msg.learning.shop.services.location_service.ILocationService;
@@ -28,37 +29,39 @@ public class SingleLocationStrategy implements IDeliveryStrategy {
     @Autowired
     ProductMapper productMapper;
 
-
-    Location locationToReturn;
-    Boolean response;
     List<StockDto> dtoToReturn = new ArrayList<>();
 
     @Override
     public List<StockDto> doAlgorithm(List<OrderDetail> orderDetails) {
-
-        locationToReturn = null;
-        locationService.getAllLocations().forEach(location -> {
+        boolean foundProducts = false;
+        for (Location location : locationService.getAllLocations()) {
             List<Stock> stocks = stockService.getStocksByLocation(location);
-            if (gotAllProductsInLocation(stocks, orderDetails))
-                this.locationToReturn = location;
-        });
+            dtoToReturn.clear();
+            if (gotAllProductsInLocation(stocks, orderDetails)) {
+                foundProducts = true;
+                break;
+            }
 
-        return dtoToReturn;
+        }
+        if (foundProducts)
+            return dtoToReturn;
+        else
+            throw new ProductsNotAvailableException();
     }
 
-    public boolean gotAllProductsInLocation(List<Stock> stocks, List<OrderDetail> orderDetails) {
-        orderDetails.forEach(order -> {
-            Stock stockk = stocks.stream().filter(stock -> stock.getProduct().getProductId().equals(order.getProductId())).findFirst().orElse(null);
-            if (stockk == null || stockk.getQuantity() < order.getQuantity()) this.response = false;
+    public boolean gotAllProductsInLocation(List<Stock> locationStock, List<OrderDetail> orderDetails) {
+        for (OrderDetail order : orderDetails) {
+            Stock stock = locationStock.stream().filter(element -> element.getProduct().getProductId().equals(order.getProductId())).findFirst().orElse(null);
+            if (stock == null || stock.getQuantity() < order.getQuantity()) return false;
             else {
-                StockDto element=StockDto.builder()
-                        .locationDto(locationService.convertToDto(stockk.getLocation()))
+                StockDto element = StockDto.builder()
+                        .locationDto(locationService.convertToDto(stock.getLocation()))
                         .quantity(order.getQuantity())
-                        .productDto(productMapper.convertToDto(stockk.getProduct()))
+                        .productDto(productMapper.convertToDto(stock.getProduct()))
                         .build();
                 dtoToReturn.add(element);
             }
-        });
-        return this.response;
+        }
+        return true;
     }
 }
