@@ -38,7 +38,7 @@ public class ProductService implements IProductService {
     public void updateProduct(Integer id, ProductDto productDto) {
         Product product;
         product = callMapperAndCheckCategory(productDto);
-        product.setProductId(id);
+        product.setId(id);
         productRepository.save(product);
     }
 

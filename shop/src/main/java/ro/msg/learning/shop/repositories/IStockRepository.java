@@ -11,7 +11,9 @@ import java.util.Optional;
 
 @Repository
 public interface IStockRepository extends JpaRepository<Stock, Integer> {
-    Optional<List<Stock>> getAllByLocation(Location location);
+    Optional<List<Stock>> findAllByLocation(Location location);
 
-    Optional<Stock> findByLocation_NameAndProduct_Name(String location_name, String product_name);
+    Stock findByLocation_NameAndProduct_Name(String location_name, String product_name);
+
+    List<Stock> findStocksByProduct_Id(Integer product_id);
 }

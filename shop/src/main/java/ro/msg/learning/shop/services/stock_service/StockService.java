@@ -20,8 +20,12 @@ public class StockService implements IStockService {
     }
 
     public List<Stock> getStocksByLocation(Location location) {
-        Optional<List<Stock>> stockOptional = stockRepository.getAllByLocation(location);
+        Optional<List<Stock>> stockOptional = stockRepository.findAllByLocation(location);
         return stockOptional.orElse(null);
     }
 
+    @Override
+    public List<Stock> getStocksByProductId(Integer productId) {
+        return stockRepository.findStocksByProduct_Id(productId);
+    }
 }

@@ -7,9 +7,9 @@ import ro.msg.learning.shop.entities.Location;
 import ro.msg.learning.shop.entities.OrderDetail;
 import ro.msg.learning.shop.entities.Stock;
 import ro.msg.learning.shop.exceptions.ProductsNotAvailableException;
-import ro.msg.learning.shop.mappers.OrderDetailMapper;
-import ro.msg.learning.shop.mappers.ProductMapper;
 import ro.msg.learning.shop.services.location_service.ILocationService;
+import ro.msg.learning.shop.services.orderDetail_service.IOrderDetailService;
+import ro.msg.learning.shop.services.product_service.IProductService;
 import ro.msg.learning.shop.services.stock_service.IStockService;
 
 import java.util.ArrayList;
@@ -24,10 +24,10 @@ public class SingleLocationStrategy implements IDeliveryStrategy {
     ILocationService locationService;
 
     @Autowired
-    OrderDetailMapper orderDetailMapper;
+    IOrderDetailService orderDetailService;
 
     @Autowired
-    ProductMapper productMapper;
+    IProductService productService;
 
     List<StockDto> dtoToReturn = new ArrayList<>();
 
@@ -51,13 +51,13 @@ public class SingleLocationStrategy implements IDeliveryStrategy {
 
     public boolean gotAllProductsInLocation(List<Stock> locationStock, List<OrderDetail> orderDetails) {
         for (OrderDetail order : orderDetails) {
-            Stock stock = locationStock.stream().filter(element -> element.getProduct().getProductId().equals(order.getProductId())).findFirst().orElse(null);
+            Stock stock = locationStock.stream().filter(element -> element.getProduct().getId().equals(order.getProductId())).findFirst().orElse(null);
             if (stock == null || stock.getQuantity() < order.getQuantity()) return false;
             else {
                 StockDto element = StockDto.builder()
                         .locationDto(locationService.convertToDto(stock.getLocation()))
                         .quantity(order.getQuantity())
-                        .productDto(productMapper.convertToDto(stock.getProduct()))
+                        .productDto(productService.convertToDto(stock.getProduct()))
                         .build();
                 dtoToReturn.add(element);
             }
