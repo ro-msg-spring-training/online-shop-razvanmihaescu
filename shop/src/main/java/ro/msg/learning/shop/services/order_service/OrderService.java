@@ -7,7 +7,7 @@ import ro.msg.learning.shop.dtos.OrderDetailDto;
 import ro.msg.learning.shop.dtos.OrderDto;
 import ro.msg.learning.shop.dtos.StockDto;
 import ro.msg.learning.shop.entities.*;
-import ro.msg.learning.shop.exceptions.OrderCouldNotBeCreated;
+import ro.msg.learning.shop.exceptions.OrderCouldNotBeCreatedException;
 import ro.msg.learning.shop.exceptions.OrderNotFoundException;
 import ro.msg.learning.shop.mappers.OrderMapper;
 import ro.msg.learning.shop.repositories.IOrderRepository;
@@ -81,7 +81,7 @@ public class OrderService implements IOrderService {
                 stockRepository.save(newStock);
             });
         } catch (RuntimeException e) {
-            throw new OrderCouldNotBeCreated(e.getMessage());
+            throw new OrderCouldNotBeCreatedException(e.getMessage());
         }
 
         return this.convertToDto(persistedOrder);

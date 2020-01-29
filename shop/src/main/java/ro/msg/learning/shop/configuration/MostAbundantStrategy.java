@@ -30,6 +30,9 @@ public class MostAbundantStrategy implements IDeliveryStrategy {
         for (OrderDetail orderDetail : orderDetails) {
             List<Stock> currentProductStocks = stockService.getStocksByProductId(orderDetail.getProductId());
             Stock maxStock = currentProductStocks.stream().max(Comparator.comparing(Stock::getQuantity)).orElseThrow(ProductsNotAvailableException::new);
+            if (maxStock.getQuantity() < orderDetail.getQuantity())
+                throw new ProductsNotAvailableException();
+
             StockDto element = StockDto.builder()
                     .locationDto(locationService.convertToDto(maxStock.getLocation()))
                     .quantity(orderDetail.getQuantity())
