@@ -2,11 +2,13 @@ package ro.msg.learning.shop.services.product_service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ro.msg.learning.shop.dtos.ProductCategoryDto;
 import ro.msg.learning.shop.dtos.ProductDto;
 import ro.msg.learning.shop.entities.Product;
 import ro.msg.learning.shop.entities.ProductCategory;
 import ro.msg.learning.shop.exceptions.ProductNotFoundException;
 import ro.msg.learning.shop.mappers.ProductMapper;
+import ro.msg.learning.shop.repositories.IProductCategoryRepository;
 import ro.msg.learning.shop.repositories.IProductRepository;
 import ro.msg.learning.shop.services.productCategory_service.IProductCategoryService;
 
@@ -24,22 +26,43 @@ public class ProductService implements IProductService {
     private ProductMapper productMapper;
 
     @Autowired
+    IProductCategoryRepository productCategoryRepository;
+
+    @Autowired
     private IProductCategoryService productCategoryService;
 
     @Override
     public ProductDto createProduct(ProductDto productDto) {
-
-        Product newProduct;
-        newProduct = callMapperAndCheckCategory(productDto);
+        Product newProduct = convertToEntity(productDto);
+        ProductCategory productCategory = productCategoryService.getProductCategoryByName(productDto.getProductCategoryDto().getName());
+        if (productCategory == null) {
+            productCategoryService.createProductCategory(ProductCategoryDto.builder()
+                    .description(productDto.getProductCategoryDto().getDescription())
+                    .name(productDto.getProductCategoryDto().getName())
+                    .build());
+            newProduct.setCategory(productCategoryService.getProductCategoryByName(productDto.getProductCategoryDto().getName()));
+        } else {
+            newProduct.setCategory(productCategory);
+        }
         return convertToDto(productRepository.save(newProduct));
     }
 
     @Override
-    public void updateProduct(Integer id, ProductDto productDto) {
-        Product product;
-        product = callMapperAndCheckCategory(productDto);
-        product.setId(id);
-        productRepository.save(product);
+    public ProductDto updateProduct(Integer id, ProductDto productDto) {
+        Product newProduct = convertToEntity(productDto);
+        ProductCategory productCategory = productCategoryService.getProductCategoryByName(productDto.getProductCategoryDto().getName());
+        if (productCategory == null) {
+            productCategoryService.createProductCategory(ProductCategoryDto.builder()
+                    .description(productDto.getProductCategoryDto().getDescription())
+                    .name(productDto.getProductCategoryDto().getName())
+                    .build());
+            newProduct.setCategory(productCategoryService.getProductCategoryByName(productDto.getProductCategoryDto().getName()));
+        } else {
+            newProduct.setCategory(productCategory);
+        }
+        newProduct.setId(id);
+        Product persistedProduct = productRepository.save(newProduct);
+        return convertToDto(persistedProduct);
     }
 
     @Override
@@ -63,24 +86,6 @@ public class ProductService implements IProductService {
         } else throw new ProductNotFoundException(productId);
     }
 
-
-    public Product callMapperAndCheckCategory(ProductDto productDto) {
-        Product newProduct = convertToEntity(productDto);
-
-        ProductCategory productCategory = productCategoryService.getProductCategoryByName(productDto.getProductCategoryDto().getName());
-
-        if (productCategory != null) {
-            newProduct.setCategory(productCategory);
-        } else {
-            ProductCategory newCategory = new ProductCategory();
-            newCategory.setName(productDto.getProductCategoryDto().getName());
-            newCategory.setDescription(productDto.getProductCategoryDto().getDescription());
-
-            ProductCategory persistedCategory = productCategoryService.createProductCategory(newCategory);
-            newProduct.setCategory(persistedCategory);
-        }
-        return newProduct;
-    }
 
     @Override
     public ProductDto convertToDto(Product product) {

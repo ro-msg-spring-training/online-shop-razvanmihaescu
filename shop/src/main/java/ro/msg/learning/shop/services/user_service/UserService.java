@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.dtos.RolesDto;
 import ro.msg.learning.shop.dtos.UserDto;
+import ro.msg.learning.shop.entities.User;
 import ro.msg.learning.shop.entities.Roles;
 import ro.msg.learning.shop.entities.User;
 import ro.msg.learning.shop.exceptions.UserNotFoundException;
@@ -63,5 +64,20 @@ public class UserService implements IUserService {
     @Override
     public User convertToEntity(UserDto userDto) {
         return userMapper.convertToEntity(userDto);
+    }
+
+    @Override
+    public UserDto updateUser(Integer userId, UserDto userDto) {
+
+        User user;
+        user = convertToEntity(userDto);
+        user.setId(userId);
+        User persistedUser = userRepository.save(user);
+        return convertToDto(persistedUser);
+    }
+
+    @Override
+    public void deleteUser(Integer userId) {
+    userRepository.deleteById(userId);
     }
 }

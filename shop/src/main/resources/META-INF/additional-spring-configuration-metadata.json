@@ -2,7 +2,7 @@
   "properties": [
     {
       "name": "delivery_strategy",
-      "type": "ro.msg.learning.shop.configuration.StrategiesEnum",
+      "type": "ro.msg.learning.shop.configuration.strategies.StrategiesEnum",
       "description": "Description for delivery_strategy."
   }
 ] }

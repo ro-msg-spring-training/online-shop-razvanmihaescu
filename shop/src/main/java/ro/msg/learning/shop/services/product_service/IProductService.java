@@ -8,15 +8,13 @@ import java.util.List;
 public interface IProductService {
     ProductDto createProduct(ProductDto productDto);
 
-    void updateProduct(Integer id, ProductDto productDto);
+    ProductDto updateProduct(Integer id, ProductDto productDto);
 
     void deleteProduct(Integer id);
 
     List<ProductDto> getProducts();
 
     ProductDto getProductById(Integer productId);
-
-    Product callMapperAndCheckCategory(ProductDto productDto);
 
     ProductDto convertToDto(Product product);
 

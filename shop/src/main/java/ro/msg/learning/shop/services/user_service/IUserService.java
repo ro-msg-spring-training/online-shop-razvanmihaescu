@@ -16,4 +16,8 @@ public interface IUserService {
     UserDto convertToDto(User user);
 
     User convertToEntity(UserDto userDto);
+
+    UserDto updateUser(Integer userId, UserDto userDto);
+
+    void deleteUser(Integer userId);
 }

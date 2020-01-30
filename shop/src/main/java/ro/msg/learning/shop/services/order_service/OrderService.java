@@ -2,7 +2,7 @@ package ro.msg.learning.shop.services.order_service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ro.msg.learning.shop.configuration.IDeliveryStrategy;
+import ro.msg.learning.shop.configuration.strategies.IDeliveryStrategy;
 import ro.msg.learning.shop.dtos.OrderDetailDto;
 import ro.msg.learning.shop.dtos.OrderDto;
 import ro.msg.learning.shop.dtos.StockDto;
@@ -105,5 +105,23 @@ public class OrderService implements IOrderService {
     @Override
     public Order convertToEntity(OrderDto orderDto) {
         return orderMapper.convertToEntity(orderDto);
+    }
+
+    @Override
+    public List<OrderDto> getOrders() {
+        return orderRepository.findAll().stream().map(order -> orderMapper.convertToDto(order)).collect(Collectors.toList());
+    }
+
+    @Override
+    public OrderDto updateOrder(Integer orderId, OrderDto orderDto) {
+        Order order = convertToEntity(orderDto);
+        order.setId(orderId);
+        Order persistedOrder = orderRepository.save(order);
+        return convertToDto(persistedOrder);
+    }
+
+    @Override
+    public void deleteOrderById(Integer orderId) {
+        orderRepository.deleteById(orderId);
     }
 }

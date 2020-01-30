@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.*;
 import ro.msg.learning.shop.dtos.OrderDto;
 import ro.msg.learning.shop.services.order_service.IOrderService;
 
+import java.util.List;
+
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/Orders")
 public class OrderController {
 
@@ -21,12 +24,30 @@ public class OrderController {
         return orderService.createOrder(orderDto);
     }
 
-    @GetMapping
-    @RequestMapping("/{orderId}")
+    @GetMapping("/{orderId}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public OrderDto getOrderById(@PathVariable Integer orderId)
-    {
+    public OrderDto getOrderById(@PathVariable Integer orderId) {
         return orderService.getOrderById(orderId);
+    }
+
+    @GetMapping
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    public List<OrderDto> getOrders() {
+        return orderService.getOrders();
+    }
+
+    @PutMapping("/{orderId}")
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    public OrderDto updateOrder(@PathVariable Integer orderId, OrderDto orderDto) {
+        return orderService.updateOrder(orderId, orderDto);
+    }
+
+    @DeleteMapping("/{orderId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteOrderById(@PathVariable Integer orderId) {
+        orderService.deleteOrderById(orderId);
     }
 }

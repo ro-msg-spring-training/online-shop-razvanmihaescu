@@ -1,4 +1,4 @@
-package ro.msg.learning.shop.configuration;
+package ro.msg.learning.shop.configuration.strategies;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import ro.msg.learning.shop.dtos.StockDto;

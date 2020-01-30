@@ -1,4 +1,4 @@
-package ro.msg.learning.shop.configuration;
+package ro.msg.learning.shop.configuration.strategies;
 
 import ro.msg.learning.shop.dtos.StockDto;
 import ro.msg.learning.shop.entities.OrderDetail;

@@ -3,6 +3,10 @@ package ro.msg.learning.shop.configuration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ro.msg.learning.shop.configuration.strategies.IDeliveryStrategy;
+import ro.msg.learning.shop.configuration.strategies.MostAbundantStrategy;
+import ro.msg.learning.shop.configuration.strategies.SingleLocationStrategy;
+import ro.msg.learning.shop.configuration.strategies.StrategiesEnum;
 
 @Configuration
 public class DeliveryStrategyConfiguration {

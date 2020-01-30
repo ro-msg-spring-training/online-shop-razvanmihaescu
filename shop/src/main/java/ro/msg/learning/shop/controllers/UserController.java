@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ro.msg.learning.shop.dtos.UserDto;
+import ro.msg.learning.shop.dtos.UserDto;
 import ro.msg.learning.shop.services.user_service.IUserService;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/Users")
 public class UserController {
 
@@ -34,5 +36,18 @@ public class UserController {
     @ResponseBody
     public List<UserDto> getUsers() {
         return userService.getUsers();
+    }
+
+
+    @PutMapping("/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDto updateUser(@PathVariable Integer userId, @RequestBody UserDto userDto) {
+        return userService.updateUser(userId, userDto);
+    }
+
+    @DeleteMapping("/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteUser(@PathVariable Integer userId) {
+        userService.deleteUser(userId);
     }
 }

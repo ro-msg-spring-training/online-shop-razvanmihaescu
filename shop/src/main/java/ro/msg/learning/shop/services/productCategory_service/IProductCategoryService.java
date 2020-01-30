@@ -1,19 +1,24 @@
 package ro.msg.learning.shop.services.productCategory_service;
 
+import ro.msg.learning.shop.dtos.ProductCategoryDto;
 import ro.msg.learning.shop.entities.ProductCategory;
 
 import java.util.List;
 
 public interface IProductCategoryService {
-    ProductCategory createProductCategory(ProductCategory productCategory);
+    ProductCategoryDto createProductCategory(ProductCategoryDto productCategoryDto);
 
-    void updateProductCategory(Integer id, ProductCategory productCategory);
+    ProductCategoryDto updateProductCategory(Integer id, ProductCategoryDto productCategoryDto);
 
     void deleteProductCategory(Integer id);
 
-    List<ProductCategory> getProductCategories();
+    List<ProductCategoryDto> getProductCategories();
 
-    ProductCategory getProductCategoryById(Integer productCategoryId);
+    ProductCategoryDto getProductCategoryById(Integer productCategoryId);
 
     ProductCategory getProductCategoryByName(String productCategoryName);
+
+    ProductCategoryDto convertToDto(ProductCategory productCategory);
+
+    ProductCategory convertToEntity(ProductCategoryDto productCategoryDto);
 }

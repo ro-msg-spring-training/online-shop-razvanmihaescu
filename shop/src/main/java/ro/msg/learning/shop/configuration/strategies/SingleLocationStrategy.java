@@ -1,4 +1,4 @@
-package ro.msg.learning.shop.configuration;
+package ro.msg.learning.shop.configuration.strategies;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
