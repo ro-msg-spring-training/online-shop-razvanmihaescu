@@ -1,12 +1,10 @@
 package ro.msg.learning.shop.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import ro.msg.learning.shop.dtos.UserDto;
-import ro.msg.learning.shop.services.user_service.IUserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import ro.msg.learning.shop.dtos.LoginDto;
+import ro.msg.learning.shop.services.login_service.ILoginService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -14,9 +12,11 @@ import ro.msg.learning.shop.services.user_service.IUserService;
 public class LoginController {
 
     @Autowired
-    IUserService userService;
+    ILoginService loginService;
 
-    public UserDto login(@RequestBody UserDto userDto) {
-        return null;
+    @PostMapping
+    @ResponseStatus(HttpStatus.OK)
+    public LoginDto login(@RequestBody LoginDto loginDto) {
+        return loginService.tryToLogin(loginDto);
     }
 }

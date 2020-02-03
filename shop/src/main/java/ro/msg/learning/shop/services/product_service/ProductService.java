@@ -34,13 +34,12 @@ public class ProductService implements IProductService {
     @Override
     public ProductDto createProduct(ProductDto productDto) {
         Product newProduct = convertToEntity(productDto);
-        ProductCategory productCategory = productCategoryService.getProductCategoryByName(productDto.getProductCategoryDto().getName());
+        ProductCategory productCategory = productCategoryService.getProductCategoryByName(productDto.getCategory());
         if (productCategory == null) {
             productCategoryService.createProductCategory(ProductCategoryDto.builder()
-                    .description(productDto.getProductCategoryDto().getDescription())
-                    .name(productDto.getProductCategoryDto().getName())
+                    .name(productDto.getCategory())
                     .build());
-            newProduct.setCategory(productCategoryService.getProductCategoryByName(productDto.getProductCategoryDto().getName()));
+            newProduct.setCategory(productCategoryService.getProductCategoryByName(productDto.getCategory()));
         } else {
             newProduct.setCategory(productCategory);
         }
@@ -50,13 +49,12 @@ public class ProductService implements IProductService {
     @Override
     public ProductDto updateProduct(Integer id, ProductDto productDto) {
         Product newProduct = convertToEntity(productDto);
-        ProductCategory productCategory = productCategoryService.getProductCategoryByName(productDto.getProductCategoryDto().getName());
+        ProductCategory productCategory = productCategoryService.getProductCategoryByName(productDto.getCategory());
         if (productCategory == null) {
             productCategoryService.createProductCategory(ProductCategoryDto.builder()
-                    .description(productDto.getProductCategoryDto().getDescription())
-                    .name(productDto.getProductCategoryDto().getName())
+                    .name(productDto.getCategory())
                     .build());
-            newProduct.setCategory(productCategoryService.getProductCategoryByName(productDto.getProductCategoryDto().getName()));
+            newProduct.setCategory(productCategoryService.getProductCategoryByName(productDto.getCategory()));
         } else {
             newProduct.setCategory(productCategory);
         }

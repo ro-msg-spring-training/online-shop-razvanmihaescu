@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ro.msg.learning.shop.dtos.UserDto;
-import ro.msg.learning.shop.dtos.UserDto;
 import ro.msg.learning.shop.services.user_service.IUserService;
 
 import java.util.List;
@@ -17,11 +16,18 @@ public class UserController {
     @Autowired
     IUserService userService;
 
-    @GetMapping("/{userId}")
+    @GetMapping("/id/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public UserDto getUserById(@PathVariable Integer userId) {
         return userService.getUserById(userId);
+    }
+
+    @GetMapping("/{username}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public UserDto getUserByUsername(@PathVariable String username) {
+        return userService.getUserByUsername(username);
     }
 
     @PostMapping

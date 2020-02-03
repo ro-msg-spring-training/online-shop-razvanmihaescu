@@ -80,4 +80,14 @@ public class UserService implements IUserService {
     public void deleteUser(Integer userId) {
     userRepository.deleteById(userId);
     }
+
+    @Override
+    public UserDto getUserByUsername(String username) {
+        Optional<User> user = userRepository.findFirstByUsername(username);
+        if (user.isPresent()) {
+            return convertToDto(user.get());
+        } else {
+            throw new UserNotFoundException(username);
+        }
+    }
 }

@@ -20,4 +20,6 @@ public interface IUserService {
     UserDto updateUser(Integer userId, UserDto userDto);
 
     void deleteUser(Integer userId);
+
+    UserDto getUserByUsername(String username);
 }

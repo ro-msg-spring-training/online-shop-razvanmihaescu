@@ -75,7 +75,7 @@ public class OrderService implements IOrderService {
             persistedOrder = orderRepository.save(newOrder);
 
             stockToSubtract.forEach(a -> {
-                Stock newStock = stockRepository.findByLocation_NameAndProduct_Name(a.getLocationDto().getName(), a.getProductDto().getProductName());
+                Stock newStock = stockRepository.findByLocation_NameAndProduct_Name(a.getLocationDto().getName(), a.getProductDto().getName());
                 Integer newQuantity = newStock.getQuantity() - a.getQuantity();
                 newStock.setQuantity(newQuantity);
                 stockRepository.save(newStock);
