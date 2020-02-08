@@ -1,7 +1,8 @@
 package ro.msg.learning.shop.services.login_service;
 
-import ro.msg.learning.shop.dtos.LoginDto;
+import org.springframework.http.ResponseEntity;
+import ro.msg.learning.shop.dtos.CredentialsDto;
 
 public interface ILoginService {
-    LoginDto tryToLogin(LoginDto loginDto);
+    ResponseEntity<?> tryToLogin(CredentialsDto credentialsDto);
 }

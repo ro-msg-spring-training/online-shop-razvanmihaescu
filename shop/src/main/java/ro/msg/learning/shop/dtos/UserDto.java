@@ -17,5 +17,5 @@ public class UserDto {
 
     private String email;
 
-    private RolesDto rolesDto;
+    private String roles;
 }

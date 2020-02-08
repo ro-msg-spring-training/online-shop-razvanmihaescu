@@ -1,43 +1,38 @@
 package ro.msg.learning.shop.services.login_service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import ro.msg.learning.shop.dtos.LoginDto;
-import ro.msg.learning.shop.dtos.UserDto;
-import ro.msg.learning.shop.entities.User;
-import ro.msg.learning.shop.exceptions.IncorrectPasswordException;
-import ro.msg.learning.shop.exceptions.UserNotFoundException;
-import ro.msg.learning.shop.mappers.UserMapper;
-import ro.msg.learning.shop.repositories.IUserRepository;
-
-import java.util.Optional;
+import ro.msg.learning.shop.dtos.CredentialsDto;
+import ro.msg.learning.shop.dtos.JwtDto;
+import ro.msg.learning.shop.security.JwtTokenProvider;
 
 @Service
-public class LoginService implements ILoginService {
+public class LoginService implements ILoginService{
 
     @Autowired
-    IUserRepository userRepository;
+    AuthenticationManager authenticationManager;
 
     @Autowired
-    UserMapper userMapper;
+    JwtTokenProvider tokenProvider;
 
     @Override
-    public LoginDto tryToLogin(LoginDto loginDto) {
-        Optional<User> user = userRepository.findFirstByUsername(loginDto.getUsername());
-        if(user.isPresent())
-        {
-            UserDto userDto=userMapper.convertToDto(user.get());
-            if(userDto.getPassword().equals(loginDto.getPassword()))
-            {
-                loginDto.setCart("CART");
-                loginDto.setFullName(userDto.getFirstName()+" "+userDto.getLastName());
-                loginDto.setRoles(userDto.getRolesDto().getName());
-                return loginDto;
-            }
-            else {
-                throw  new IncorrectPasswordException();
-            }
-        }
-        else throw new UserNotFoundException(loginDto.getUsername());
+    public ResponseEntity<?> tryToLogin(CredentialsDto credentialsDto) {
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        credentialsDto.getUsername(),
+                        credentialsDto.getPassword()
+                )
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String token = tokenProvider.generateToken(authentication);
+        return ResponseEntity.ok(new JwtDto(token));
     }
 }

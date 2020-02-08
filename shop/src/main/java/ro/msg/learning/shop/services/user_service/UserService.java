@@ -1,10 +1,9 @@
 package ro.msg.learning.shop.services.user_service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import ro.msg.learning.shop.dtos.RolesDto;
 import ro.msg.learning.shop.dtos.UserDto;
-import ro.msg.learning.shop.entities.User;
 import ro.msg.learning.shop.entities.Roles;
 import ro.msg.learning.shop.entities.User;
 import ro.msg.learning.shop.exceptions.UserNotFoundException;
@@ -28,6 +27,9 @@ public class UserService implements IUserService {
     @Autowired
     IRoleRepository roleRepository;
 
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @Override
     public UserDto getUserById(Integer userId) {
@@ -42,7 +44,8 @@ public class UserService implements IUserService {
     @Override
     public UserDto createUser(UserDto userDto) {
         User newUser = userMapper.convertToEntity(userDto);
-        Optional<Roles> role = roleRepository.findById(userDto.getRolesDto().getName());
+        newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
+        Optional<Roles> role = roleRepository.findById(userDto.getRoles());
         if (role.isPresent()) {
             newUser.setRoles(role.get());
         } else {
@@ -68,9 +71,7 @@ public class UserService implements IUserService {
 
     @Override
     public UserDto updateUser(Integer userId, UserDto userDto) {
-
-        User user;
-        user = convertToEntity(userDto);
+        User user = convertToEntity(userDto);
         user.setId(userId);
         User persistedUser = userRepository.save(user);
         return convertToDto(persistedUser);
@@ -78,7 +79,7 @@ public class UserService implements IUserService {
 
     @Override
     public void deleteUser(Integer userId) {
-    userRepository.deleteById(userId);
+        userRepository.deleteById(userId);
     }
 
     @Override

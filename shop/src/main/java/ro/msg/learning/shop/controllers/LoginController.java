@@ -1,9 +1,9 @@
 package ro.msg.learning.shop.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ro.msg.learning.shop.dtos.LoginDto;
+import ro.msg.learning.shop.dtos.CredentialsDto;
 import ro.msg.learning.shop.services.login_service.ILoginService;
 
 @RestController
@@ -15,8 +15,8 @@ public class LoginController {
     ILoginService loginService;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.OK)
-    public LoginDto login(@RequestBody LoginDto loginDto) {
-        return loginService.tryToLogin(loginDto);
+    public ResponseEntity<?> authenticateUser(@RequestBody CredentialsDto credentialsDto) {
+        return loginService.tryToLogin(credentialsDto);
     }
+
 }
