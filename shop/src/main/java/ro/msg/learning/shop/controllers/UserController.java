@@ -3,6 +3,7 @@ package ro.msg.learning.shop.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ro.msg.learning.shop.dtos.CartDto;
 import ro.msg.learning.shop.dtos.UserDto;
 import ro.msg.learning.shop.services.user_service.IUserService;
 
@@ -55,5 +56,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteUser(@PathVariable Integer userId) {
         userService.deleteUser(userId);
+    }
+
+    @PatchMapping("/{username}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateUserCart(@PathVariable String username, @RequestBody List<CartDto> cartDto) {
+        userService.updateUserCart(username,cartDto);
     }
 }

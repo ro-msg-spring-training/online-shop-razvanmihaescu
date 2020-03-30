@@ -25,7 +25,7 @@ public class Order {
     @OneToOne(cascade = CascadeType.ALL)
     private Location shippedFrom;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User customer;
 
     private LocalDateTime createdAt;

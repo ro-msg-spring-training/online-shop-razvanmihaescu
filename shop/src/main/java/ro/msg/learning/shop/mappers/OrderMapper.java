@@ -26,7 +26,7 @@ public class OrderMapper {
     }
 
     public Order convertToEntity(OrderDto orderDto) {
-        Location location= Location.builder()
+        Location location = Location.builder()
                 .address(addressMapper.convertToEntity(orderDto.getDeliveryLocation()))
                 .build();
 

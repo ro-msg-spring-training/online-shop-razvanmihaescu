@@ -3,13 +3,17 @@ package ro.msg.learning.shop.services.user_service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import ro.msg.learning.shop.dtos.CartDto;
 import ro.msg.learning.shop.dtos.UserDto;
+import ro.msg.learning.shop.entities.Cart;
 import ro.msg.learning.shop.entities.Roles;
 import ro.msg.learning.shop.entities.User;
 import ro.msg.learning.shop.exceptions.UserNotFoundException;
+import ro.msg.learning.shop.mappers.CartMapper;
 import ro.msg.learning.shop.mappers.UserMapper;
 import ro.msg.learning.shop.repositories.IRoleRepository;
 import ro.msg.learning.shop.repositories.IUserRepository;
+import ro.msg.learning.shop.services.cart_service.CartService;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +34,8 @@ public class UserService implements IUserService {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    CartService cartService;
 
     @Override
     public UserDto getUserById(Integer userId) {
@@ -90,5 +96,26 @@ public class UserService implements IUserService {
         } else {
             throw new UserNotFoundException(username);
         }
+    }
+
+    @Override
+    public void updateUserCart(String username, List<CartDto> cartDto) {
+        Optional<User> userOptional = userRepository.findFirstByUsername(username);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            clearUserCart(user);
+            user.setCart(cartDto.stream().map(cart -> {
+                Cart cartEntity = cartService.convertToEntity(cart);
+                cartEntity.setUser(user);
+                return cartEntity;
+            }).collect(Collectors.toList()));
+            userRepository.save(user);
+        } else throw new UserNotFoundException(username);
+    }
+
+    public void clearUserCart(User user)
+    {
+        cartService.clearUserCart(user);
     }
 }

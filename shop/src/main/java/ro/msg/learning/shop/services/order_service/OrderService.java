@@ -13,8 +13,10 @@ import ro.msg.learning.shop.mappers.OrderMapper;
 import ro.msg.learning.shop.repositories.IOrderRepository;
 import ro.msg.learning.shop.repositories.IStockRepository;
 import ro.msg.learning.shop.services.location_service.ILocationService;
+import ro.msg.learning.shop.services.mail_service.IMailService;
 import ro.msg.learning.shop.services.orderDetail_service.IOrderDetailService;
-import ro.msg.learning.shop.services.product_service.ProductService;
+import ro.msg.learning.shop.services.product_service.IProductService;
+import ro.msg.learning.shop.services.user_service.IUserService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,11 +45,18 @@ public class OrderService implements IOrderService {
     ILocationService locationService;
 
     @Autowired
-    ProductService productService;
+    IProductService productService;
+
+    @Autowired
+    IMailService mailService;
+
+    @Autowired
+    IUserService userService;
 
     @Override
     public OrderDto createOrder(OrderDto orderDto) {
         Order persistedOrder;
+        User user = userService.convertToEntity(userService.getUserByUsername(orderDto.getUsername()));
 
         Address address = Address.builder()
                 .country(orderDto.getDeliveryLocation().getCountry())
@@ -58,7 +67,7 @@ public class OrderService implements IOrderService {
 
 
         Location location = Location.builder()
-                .name("Adresa lui USERNAME")
+                .name("Adresa lui " + user.getUsername())
                 .address(address)
                 .build();
 
@@ -71,6 +80,7 @@ public class OrderService implements IOrderService {
             List<StockDto> stockToSubtract = deliveryStrategy.doAlgorithm(orderDetails);
             newOrder.setOrderDetail(orderDetails);
             newOrder.setDeliveryLocation(location);
+            newOrder.setCustomer(user); // problem because of doubling the same user
             newOrder.setCreatedAt(LocalDateTime.now());
             persistedOrder = orderRepository.save(newOrder);
 
@@ -80,6 +90,8 @@ public class OrderService implements IOrderService {
                 newStock.setQuantity(newQuantity);
                 stockRepository.save(newStock);
             });
+
+            mailService.sendOrderSuccessfullyCreatedEmail(persistedOrder.getCustomer().getEmail(), persistedOrder.getId());
         } catch (RuntimeException e) {
             throw new OrderCouldNotBeCreatedException(e.getMessage());
         }

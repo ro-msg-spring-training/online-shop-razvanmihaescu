@@ -1,5 +1,6 @@
 package ro.msg.learning.shop.services.user_service;
 
+import ro.msg.learning.shop.dtos.CartDto;
 import ro.msg.learning.shop.dtos.UserDto;
 import ro.msg.learning.shop.entities.User;
 
@@ -22,4 +23,6 @@ public interface IUserService {
     void deleteUser(Integer userId);
 
     UserDto getUserByUsername(String username);
+
+    void updateUserCart(String username, List<CartDto> cartDto);
 }

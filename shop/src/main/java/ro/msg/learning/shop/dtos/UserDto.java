@@ -3,6 +3,8 @@ package ro.msg.learning.shop.dtos;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Builder
 public class UserDto {
@@ -18,4 +20,6 @@ public class UserDto {
     private String email;
 
     private String roles;
+
+    private List<CartDto> cart;
 }

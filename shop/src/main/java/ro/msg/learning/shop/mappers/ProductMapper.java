@@ -1,6 +1,5 @@
 package ro.msg.learning.shop.mappers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.msg.learning.shop.dtos.ProductDto;
 import ro.msg.learning.shop.entities.Product;

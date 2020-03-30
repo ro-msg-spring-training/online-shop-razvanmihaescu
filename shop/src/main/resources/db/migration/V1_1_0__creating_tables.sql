@@ -1,4 +1,5 @@
 drop table if exists address;
+drop table if exists cart;
 drop table if exists location;
 drop table if exists order_detail;
 drop table if exists orders;
@@ -9,6 +10,7 @@ drop table if exists roles;
 drop table if exists stock;
 drop table if exists user;
 create table address (id integer not null auto_increment, city varchar(255), country varchar(255), county varchar(255), street varchar(255), primary key (id)) engine=InnoDB;
+create table cart (id integer not null auto_increment, product_id integer, quantity integer, user_id integer, primary key (id)) engine=InnoDB;
 create table location (id integer not null auto_increment, name varchar(255), address_id integer, primary key (id)) engine=InnoDB;
 create table order_detail (id integer not null auto_increment, product_id integer, quantity integer, order_id integer, primary key (id)) engine=InnoDB;
 create table orders (id integer not null auto_increment, created_at datetime, customer_id integer, delivery_location_id integer, shipped_from_id integer, primary key (id)) engine=InnoDB;
@@ -18,6 +20,7 @@ create table revenue (id integer not null auto_increment, date date, sum float, 
 create table roles (name varchar(255) not null, primary key (name)) engine=InnoDB;
 create table stock (id integer not null auto_increment, quantity integer, location_id integer, product_id integer, primary key (id)) engine=InnoDB;
 create table user (id integer not null auto_increment, email varchar(255), first_name varchar(255), last_name varchar(255), password varchar(255), username varchar(255), roles_name varchar(255), primary key (id)) engine=InnoDB;
+alter table cart add constraint FKl70asp4l4w0jmbm1tqyofho4o foreign key (user_id) references user (id);
 alter table location add constraint FKt8psi9b5mkkfc0r9fgptngwhg foreign key (address_id) references address (id);
 alter table order_detail add constraint FKrws2q0si6oyd6il8gqe2aennc foreign key (order_id) references orders (id);
 alter table orders add constraint FK14n2jkmoyhpimhracvcdy7sst foreign key (customer_id) references user (id);

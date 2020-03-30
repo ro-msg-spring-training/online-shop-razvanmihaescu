@@ -10,6 +10,9 @@ import java.util.List;
 @Builder
 public class OrderDto {
 
+    @JsonAlias(value = "customer")
+    private String username;
+
     //add an Alias in JSON Request that you can use instead of field name
     @JsonAlias(value = "address")
     private AddressDto deliveryLocation;
