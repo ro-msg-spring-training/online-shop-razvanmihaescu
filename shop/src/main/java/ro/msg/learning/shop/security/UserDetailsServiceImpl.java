@@ -1,6 +1,6 @@
-package ro.msg.learning.shop.services.userDetails_service;
+package ro.msg.learning.shop.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,9 +13,10 @@ import java.util.Optional;
 import static java.util.Collections.emptyList;
 
 @Service
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-    @Autowired
-    IUserRepository userRepository;
+
+    private final IUserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) {

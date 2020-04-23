@@ -1,28 +1,26 @@
 package ro.msg.learning.shop.configuration.strategies;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import ro.msg.learning.shop.dtos.StockDto;
 import ro.msg.learning.shop.entities.OrderDetail;
 import ro.msg.learning.shop.entities.Stock;
 import ro.msg.learning.shop.exceptions.ProductsNotAvailableException;
-import ro.msg.learning.shop.services.location_service.ILocationService;
-import ro.msg.learning.shop.services.product_service.IProductService;
-import ro.msg.learning.shop.services.stock_service.IStockService;
+import ro.msg.learning.shop.mappers.ILocationMapper;
+import ro.msg.learning.shop.mappers.IProductMapper;
+import ro.msg.learning.shop.services.StockService;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+@RequiredArgsConstructor
+@Component
+@Data
 public class MostAbundantStrategy implements IDeliveryStrategy {
 
-    @Autowired
-    IStockService stockService;
-
-    @Autowired
-    IProductService productService;
-
-    @Autowired
-    ILocationService locationService;
+    private final StockService stockService;
 
     @Override
     public List<StockDto> doAlgorithm(List<OrderDetail> orderDetails) {
@@ -34,9 +32,9 @@ public class MostAbundantStrategy implements IDeliveryStrategy {
                 throw new ProductsNotAvailableException();
 
             StockDto element = StockDto.builder()
-                    .locationDto(locationService.convertToDto(maxStock.getLocation()))
+                    .locationDto(ILocationMapper.INSTANCE.locationToLocationDto(maxStock.getLocation()))
                     .quantity(orderDetail.getQuantity())
-                    .productDto(productService.convertToDto(maxStock.getProduct()))
+                    .productDto(IProductMapper.INSTANCE.productToProductDto(maxStock.getProduct()))
                     .build();
             dtoToReturn.add(element);
         }

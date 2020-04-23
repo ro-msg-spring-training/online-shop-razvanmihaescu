@@ -1,6 +1,6 @@
-package ro.msg.learning.shop.services.stock_service;
+package ro.msg.learning.shop.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.entities.Location;
 import ro.msg.learning.shop.entities.Stock;
@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class StockService implements IStockService {
+@RequiredArgsConstructor
+public class StockService {
 
-    @Autowired
-    IStockRepository stockRepository;
+    private final IStockRepository stockRepository;
 
     public List<Stock> getAllStock() {
         return stockRepository.findAll();
@@ -24,7 +24,6 @@ public class StockService implements IStockService {
         return stockOptional.orElse(null);
     }
 
-    @Override
     public List<Stock> getStocksByProductId(Integer productId) {
         return stockRepository.findStocksByProduct_Id(productId);
     }

@@ -1,33 +1,28 @@
 package ro.msg.learning.shop.configuration.strategies;
 
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import ro.msg.learning.shop.dtos.StockDto;
 import ro.msg.learning.shop.entities.Location;
 import ro.msg.learning.shop.entities.OrderDetail;
 import ro.msg.learning.shop.entities.Stock;
 import ro.msg.learning.shop.exceptions.ProductsNotAvailableException;
-import ro.msg.learning.shop.services.location_service.ILocationService;
-import ro.msg.learning.shop.services.orderDetail_service.IOrderDetailService;
-import ro.msg.learning.shop.services.product_service.IProductService;
-import ro.msg.learning.shop.services.stock_service.IStockService;
+import ro.msg.learning.shop.mappers.ILocationMapper;
+import ro.msg.learning.shop.mappers.IProductMapper;
+import ro.msg.learning.shop.services.LocationService;
+import ro.msg.learning.shop.services.StockService;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
+@Component
 @Data
 public class SingleLocationStrategy implements IDeliveryStrategy {
-    @Autowired
-    IStockService stockService;
 
-    @Autowired
-    ILocationService locationService;
-
-    @Autowired
-    IOrderDetailService orderDetailService;
-
-    @Autowired
-    IProductService productService;
+    private final StockService stockService;
+    private final LocationService locationService;
 
     List<StockDto> dtoToReturn = new ArrayList<>();
 
@@ -55,9 +50,9 @@ public class SingleLocationStrategy implements IDeliveryStrategy {
             if (stock == null || stock.getQuantity() < order.getQuantity()) return false;
             else {
                 StockDto element = StockDto.builder()
-                        .locationDto(locationService.convertToDto(stock.getLocation()))
+                        .locationDto(ILocationMapper.INSTANCE.locationToLocationDto(stock.getLocation()))
                         .quantity(order.getQuantity())
-                        .productDto(productService.convertToDto(stock.getProduct()))
+                        .productDto(IProductMapper.INSTANCE.productToProductDto(stock.getProduct()))
                         .build();
                 dtoToReturn.add(element);
             }

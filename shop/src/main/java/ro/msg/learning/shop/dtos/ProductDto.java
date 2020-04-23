@@ -3,8 +3,8 @@ package ro.msg.learning.shop.dtos;
 import lombok.Builder;
 import lombok.Data;
 
-@Data
 @Builder
+@Data
 public class ProductDto {
 
     private Integer id;
@@ -17,7 +17,7 @@ public class ProductDto {
 
     private Double weight;
 
-    private String category;
+    private ProductCategoryDto category;
 
     private String imageUrl;
 }

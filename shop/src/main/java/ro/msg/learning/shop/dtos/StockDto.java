@@ -3,8 +3,8 @@ package ro.msg.learning.shop.dtos;
 import lombok.Builder;
 import lombok.Data;
 
-@Data
 @Builder
+@Data
 public class StockDto {
 
     private LocationDto locationDto;

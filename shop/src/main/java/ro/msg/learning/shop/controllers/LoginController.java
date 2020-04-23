@@ -1,18 +1,17 @@
 package ro.msg.learning.shop.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.msg.learning.shop.dtos.CredentialsDto;
-import ro.msg.learning.shop.services.login_service.ILoginService;
+import ro.msg.learning.shop.services.LoginService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@RequiredArgsConstructor
 @RequestMapping("/Login")
 public class LoginController {
 
-    @Autowired
-    ILoginService loginService;
+    private final LoginService loginService;
 
     @PostMapping
     public ResponseEntity<?> authenticateUser(@RequestBody CredentialsDto credentialsDto) {

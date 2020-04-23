@@ -1,42 +1,42 @@
 package ro.msg.learning.shop.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ro.msg.learning.shop.dtos.ProductCategoryDto;
-import ro.msg.learning.shop.entities.ProductCategory;
-import ro.msg.learning.shop.services.productCategory_service.IProductCategoryService;
+import ro.msg.learning.shop.mappers.IProductCategoryMapper;
+import ro.msg.learning.shop.services.ProductCategoryService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@RequiredArgsConstructor
 @RequestMapping("/ProductCategory")
 public class ProductCategoryController {
 
-    @Autowired
-    private IProductCategoryService productCategoryService;
+    private final ProductCategoryService productCategoryService;
 
     @GetMapping
     public List<ProductCategoryDto> getAllProductCategories() {
-        return productCategoryService.getProductCategories();
+        return productCategoryService.getProductCategories().stream().map(IProductCategoryMapper.INSTANCE::productCategoryToProductCategoryDto).collect(Collectors.toList());
     }
 
     @GetMapping("/{productCategoryId}")
     public ProductCategoryDto getProductCategoryById(@PathVariable Integer productCategoryId) {
-        return productCategoryService.getProductCategoryById(productCategoryId);
+        return IProductCategoryMapper.INSTANCE.productCategoryToProductCategoryDto(productCategoryService.getProductCategoryById(productCategoryId));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProductCategoryDto addProductCategory(@RequestBody ProductCategoryDto productCategoryDto) {
-        return productCategoryService.createProductCategory(productCategoryDto);
+        return IProductCategoryMapper.INSTANCE.productCategoryToProductCategoryDto(productCategoryService.createProductCategory(productCategoryDto));
     }
 
     @PutMapping("/{productCategoryId}")
     @ResponseStatus(HttpStatus.OK)
     public ProductCategoryDto updateProductCategory(@PathVariable Integer productCategoryId, @RequestBody ProductCategoryDto productCategoryDto) {
-        return productCategoryService.updateProductCategory(productCategoryId, productCategoryDto);
+        return IProductCategoryMapper.INSTANCE.productCategoryToProductCategoryDto(productCategoryService.updateProductCategory(productCategoryId, productCategoryDto));
     }
 
     @DeleteMapping("/{productCategoryId}")

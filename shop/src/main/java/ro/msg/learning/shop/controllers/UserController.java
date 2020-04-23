@@ -1,55 +1,56 @@
 package ro.msg.learning.shop.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ro.msg.learning.shop.dtos.CartDto;
 import ro.msg.learning.shop.dtos.UserDto;
-import ro.msg.learning.shop.services.user_service.IUserService;
+import ro.msg.learning.shop.mappers.IUserMapper;
+import ro.msg.learning.shop.services.UserService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@RequiredArgsConstructor
 @RequestMapping("/Users")
 public class UserController {
 
-    @Autowired
-    IUserService userService;
+    private final UserService userService;
 
     @GetMapping("/id/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public UserDto getUserById(@PathVariable Integer userId) {
-        return userService.getUserById(userId);
+        return IUserMapper.INSTANCE.userToUserDto(userService.getUserById(userId));
     }
 
     @GetMapping("/{username}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public UserDto getUserByUsername(@PathVariable String username) {
-        return userService.getUserByUsername(username);
+        return IUserMapper.INSTANCE.userToUserDto(userService.getUserByUsername(username));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public UserDto addUser(@RequestBody UserDto userDto) {
-        return userService.createUser(userDto);
+        return IUserMapper.INSTANCE.userToUserDto(userService.createUser(userDto));
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<UserDto> getUsers() {
-        return userService.getUsers();
+        return userService.getUsers().stream().map(IUserMapper.INSTANCE::userToUserDto).collect(Collectors.toList());
     }
 
 
     @PutMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public UserDto updateUser(@PathVariable Integer userId, @RequestBody UserDto userDto) {
-        return userService.updateUser(userId, userDto);
+        return IUserMapper.INSTANCE.userToUserDto(userService.updateUser(userId, userDto));
     }
 
     @DeleteMapping("/{userId}")
@@ -61,6 +62,6 @@ public class UserController {
     @PatchMapping("/{username}")
     @ResponseStatus(HttpStatus.OK)
     public void updateUserCart(@PathVariable String username, @RequestBody List<CartDto> cartDto) {
-        userService.updateUserCart(username,cartDto);
+        userService.updateUserCart(username, cartDto);
     }
 }

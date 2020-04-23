@@ -5,8 +5,8 @@ import lombok.Data;
 
 import java.util.List;
 
-@Data
 @Builder
+@Data
 public class UserDto {
 
     private String firstName;
@@ -19,7 +19,7 @@ public class UserDto {
 
     private String email;
 
-    private String roles;
+    private RolesDto roles;
 
     private List<CartDto> cart;
 }
