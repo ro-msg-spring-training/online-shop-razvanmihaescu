@@ -22,6 +22,7 @@ public class Order {
     @Column(unique = true)
     private Integer id;
 
+    // TODO OneToMany
     @OneToOne(cascade = CascadeType.ALL)
     private Location shippedFrom;
 
@@ -30,6 +31,7 @@ public class Order {
 
     private LocalDateTime createdAt;
 
+    // TODO OneToMany
     @OneToOne(cascade = CascadeType.ALL)
     private Location deliveryLocation;
 
