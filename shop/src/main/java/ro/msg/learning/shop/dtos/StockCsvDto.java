@@ -13,5 +13,4 @@ public class StockCsvDto {
 
     private String productName;
 
-
 }

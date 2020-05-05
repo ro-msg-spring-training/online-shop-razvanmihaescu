@@ -1,0 +1,33 @@
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:mysql://localhost:3308/online-shop?useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  flyway:
+    enabled: true
+    locations: filesystem:src/main/resources/db/migration
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: javaftt7@gmail.com
+    password: asdasdasd.1
+    properties:
+      smtpAuth: true
+      starttlsEnable: true
+      transportProtocol: smtp
+
+app:
+  deliveryStrategy: single_location
+
+---
+spring:
+  profiles: test

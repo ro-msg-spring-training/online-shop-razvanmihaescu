@@ -1,7 +1,6 @@
 package ro.msg.learning.shop.util;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -27,7 +26,7 @@ public class MessageConverter<T> extends AbstractGenericHttpMessageConverter<T> 
 
     public MessageConverter() {
         super(new MediaType("text", "csv"));
-        this.csvConverter = new CsvConverter<T>();
+        this.csvConverter = new CsvConverter<>();
     }
 
     @Override

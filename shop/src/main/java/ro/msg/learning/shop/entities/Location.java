@@ -23,4 +23,7 @@ public class Location {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
+
+    @ManyToOne
+    private Order order;
 }

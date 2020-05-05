@@ -22,18 +22,16 @@ public class Order {
     @Column(unique = true)
     private Integer id;
 
-    // TODO OneToMany
-    @OneToOne(cascade = CascadeType.ALL)
-    private Location shippedFrom;
+    @OneToMany(mappedBy = "order")
+    private List<Location> shippedFrom;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private User customer;
 
     private LocalDateTime createdAt;
 
-    // TODO OneToMany
-    @OneToOne(cascade = CascadeType.ALL)
-    private Location deliveryLocation;
+    @ManyToOne
+    private Address deliveryAddress;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderDetail> orderDetail;

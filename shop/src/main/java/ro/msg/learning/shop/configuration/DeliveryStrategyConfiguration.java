@@ -1,7 +1,9 @@
 package ro.msg.learning.shop.configuration;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ro.msg.learning.shop.configuration.strategies.IDeliveryStrategy;
@@ -9,12 +11,14 @@ import ro.msg.learning.shop.configuration.strategies.MostAbundantStrategy;
 import ro.msg.learning.shop.configuration.strategies.SingleLocationStrategy;
 import ro.msg.learning.shop.configuration.strategies.StrategiesEnum;
 
+@Data
 @Configuration
+@EnableConfigurationProperties
+@ConfigurationProperties("app")
 @RequiredArgsConstructor
 public class DeliveryStrategyConfiguration {
 
-    @Value("${delivery_strategy}")
-    private String propertyValue;
+    private String deliveryStrategy;
 
     private final MostAbundantStrategy mostAbundantStrategy;
     private final SingleLocationStrategy singleLocationStrategy;
@@ -23,7 +27,7 @@ public class DeliveryStrategyConfiguration {
     public IDeliveryStrategy getDeliveryStrategy() {
         StrategiesEnum strategyValue;
         try {
-            strategyValue = StrategiesEnum.valueOf(propertyValue.toUpperCase());
+            strategyValue = StrategiesEnum.valueOf(deliveryStrategy.toUpperCase());
         } catch (IllegalArgumentException e) {
             strategyValue = StrategiesEnum.SINGLE_LOCATION;
         }

@@ -1,6 +1,8 @@
 package ro.msg.learning.shop.configuration;
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -8,29 +10,21 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
+@Data
 @Configuration
+@EnableConfigurationProperties
+@ConfigurationProperties("spring.mail")
 public class MailConfig {
 
-    @Value("${spring.mail.host}")
     private String host;
 
-    @Value("${spring.mail.port}")
     private String port;
 
-    @Value("${spring.mail.username}")
     private String username;
 
-    @Value("${spring.mail.password}")
     private String password;
 
-    @Value("${spring.mail.properties.mail.smtp.starttls.enable}")
-    private Boolean starttls;
-
-    @Value("${spring.mail.properties.mail.smtp.auth}")
-    private Boolean auth;
-
-    @Value("${spring.mail.properties.mail.protocol.transport.protocol}")
-    private String protocol;
+    private MailConfigProperties properties;
 
     @Bean
     public JavaMailSender getMailSender() {
@@ -42,11 +36,24 @@ public class MailConfig {
         mailSender.setPassword(password);
 
         Properties javaMailProperties = new Properties();
-        javaMailProperties.put("mail.smtp.starttls.enable", starttls);
-        javaMailProperties.put("mail.smtp.auth", auth);
-        javaMailProperties.put("mail.transport.protocol", protocol);
+        javaMailProperties.put("mail.smtp.starttls.enable", properties.starttlsEnable);
+        javaMailProperties.put("mail.smtp.auth", properties.smtpAuth);
+        javaMailProperties.put("mail.transport.protocol", properties.transportProtocol);
 
         mailSender.setJavaMailProperties(javaMailProperties);
         return mailSender;
+    }
+
+    @Data
+    @Configuration
+    @EnableConfigurationProperties
+    @ConfigurationProperties("spring.mail.properties")
+    private static class MailConfigProperties {
+
+        private Boolean smtpAuth;
+
+        private Boolean starttlsEnable;
+
+        private String transportProtocol;
     }
 }

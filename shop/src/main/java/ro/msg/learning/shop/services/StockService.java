@@ -10,6 +10,8 @@ import ro.msg.learning.shop.mappers.IStockMapper;
 import ro.msg.learning.shop.repositories.IStockRepository;
 import ro.msg.learning.shop.util.MessageConverter;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,5 +36,12 @@ public class StockService {
 
     public String exportStockForGivenLocation(Integer locationId) throws JsonProcessingException {
         return messageConverter.getCsvConverter().toCsv(StockCsvDto.class, stockRepository.findAllByLocation_Id(locationId).stream().map(IStockMapper.INSTANCE::stockToStockCsvDto).collect(Collectors.toList()));
+    }
+
+    public List<Stock> importStockFromCSV() throws IOException {
+        File file = new File("src\\main\\java\\ro\\msg\\learning\\shop\\util\\Stock.csv");
+        messageConverter.getCsvConverter().setUploadedFile(file);
+        List<StockCsvDto> stockCsvDtoList = messageConverter.getCsvConverter().fromCsv(StockCsvDto.class);
+        return stockCsvDtoList.stream().map(IStockMapper.INSTANCE::stockCsvDtoToStock).collect(Collectors.toList());
     }
 }

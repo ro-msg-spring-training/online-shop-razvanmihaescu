@@ -40,12 +40,6 @@ public class OrderService {
                 .county(orderDto.getDeliveryLocation().getCounty())
                 .build();
 
-
-        Location location = Location.builder()
-                .name("Adresa lui " + user.getUsername())
-                .address(address)
-                .build();
-
         try {
             Order newOrder = IOrderMapper.INSTANCE.orderDtoToOrder(orderDto);
             List<OrderDetailDto> orderDetailDtos = orderDto.getOrderDetailDtos();
@@ -54,7 +48,7 @@ public class OrderService {
             orderDetails.forEach(orderDetail -> orderDetail.setOrder(newOrder));
             List<StockDto> stockToSubtract = deliveryStrategy.getDeliveryStrategy().doAlgorithm(orderDetails);
             newOrder.setOrderDetail(orderDetails);
-            newOrder.setDeliveryLocation(location);
+            newOrder.setDeliveryAddress(address);
             newOrder.setCustomer(user); // problem because of doubling the same user
             newOrder.setCreatedAt(LocalDateTime.now());
             persistedOrder = orderRepository.save(newOrder);
