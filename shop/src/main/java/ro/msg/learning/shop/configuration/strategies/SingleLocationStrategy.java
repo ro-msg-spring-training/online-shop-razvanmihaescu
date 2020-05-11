@@ -36,7 +36,6 @@ public class SingleLocationStrategy implements IDeliveryStrategy {
                 foundProducts = true;
                 break;
             }
-
         }
         if (foundProducts)
             return dtoToReturn;

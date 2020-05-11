@@ -30,7 +30,7 @@ public class Order {
 
     private LocalDateTime createdAt;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Address deliveryAddress;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)

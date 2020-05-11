@@ -1,0 +1,19 @@
+{
+  "customer": "TEST_CUSTOMER",
+  "address": {
+    "country": "Romania",
+    "city": "Timisoara",
+    "county": "Timis",
+    "street": "Bulevardul Cetatii"
+  },
+  "orderDetail": [
+    {
+      "productId": 2,
+      "quantity": 100
+    },
+    {
+      "productId": 3,
+      "quantity": 4
+    }
+  ]
+}

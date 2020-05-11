@@ -31,3 +31,36 @@ app:
 ---
 spring:
   profiles: test
+  jdbc:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1
+  datasource:
+    url: jdbc:h2:~/testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    generate-ddl: false
+  flyway:
+    enabled: true
+    locations: filesystem:src/test/resources/db
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: javaftt7@gmail.com
+    password: asdasdasd.1
+    properties:
+      smtpAuth: true
+      starttlsEnable: true
+      transportProtocol: smtp
+
+  h2:
+    console:
+      enabled: true
+
+app:
+  deliveryStrategy: single_location
+

@@ -35,8 +35,7 @@ public class CsvConverter<T> {
         CsvMapper mapper = new CsvMapper();
         CsvSchema schema = mapper.schemaFor(objectClass);
 
-        schema = schema.withUseHeader(true);
-        schema = schema.withColumnSeparator(',');
+        schema = schema.withUseHeader(true).withColumnSeparator(',').withoutQuoteChar();
 
         return mapper.writer(schema).writeValueAsString(inputObjects);
     }

@@ -42,8 +42,7 @@ public class OrderService {
 
         try {
             Order newOrder = IOrderMapper.INSTANCE.orderDtoToOrder(orderDto);
-            List<OrderDetailDto> orderDetailDtos = orderDto.getOrderDetailDtos();
-            List<OrderDetail> orderDetails = orderDetailDtos.stream().map(IOrderDetailMapper.INSTANCE::orderDetailDtoToOrderDetail).collect(Collectors.toList());
+            List<OrderDetail> orderDetails = orderDto.getOrderDetailDtos().stream().map(IOrderDetailMapper.INSTANCE::orderDetailDtoToOrderDetail).collect(Collectors.toList());
 
             orderDetails.forEach(orderDetail -> orderDetail.setOrder(newOrder));
             List<StockDto> stockToSubtract = deliveryStrategy.getDeliveryStrategy().doAlgorithm(orderDetails);
