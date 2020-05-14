@@ -25,5 +25,5 @@ public class Location {
     private Address address;
 
     @ManyToOne
-    private Order order;
+    private Order orderShipped;
 }

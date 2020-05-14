@@ -1,23 +1,23 @@
 insert into address (id, city, country, county, street)
-values (1, 'Huifeng', 'China', 'CN', '02 Bashford Pass');
+values (1, 'Timisoara', 'Romania', 'RO', '02 Bashford Pass');
 insert into address (id, city, country, county, street)
-values (2, 'Hässleholm', 'Sweden', 'SE', '0 Forest Crossing');
+values (2, 'Faget', 'Romania', 'RO', '0 Forest Crossing');
 insert into address (id, city, country, county, street)
-values (3, 'Pustomyty', 'Ukraine', 'UA', '48167 Comanche Lane');
+values (3, 'Deva', 'Romania', 'RO', '48167 Comanche Lane');
 insert into address (id, city, country, county, street)
-values (4, 'Sedatigede', 'Indonesia', 'ID', '248 Shelley Place');
+values (4, 'Sibiu', 'Romania', 'RO', '248 Shelley Place');
 insert into address (id, city, country, county, street)
-values (5, 'Thị Trấn Nghèn', 'Vietnam', 'VN', '73 Towne Park');
+values (5, 'Bucuresti', 'Romania', 'RO', '73 Towne Park');
 insert into address (id, city, country, county, street)
-values (6, 'Ghanzi', 'Botswana', 'BW', '3957 Summit Pass');
+values (6, 'Craiova', 'Romania', 'RO', '3957 Summit Pass');
 insert into address (id, city, country, county, street)
-values (7, 'Janowice', 'Poland', 'PL', '886 Reinke Way');
+values (7, 'Constanta', 'Romania', 'RO', '886 Reinke Way');
 insert into address (id, city, country, county, street)
-values (8, 'Trzebinia', 'Poland', 'PL', '5 Delaware Pass');
+values (8, 'Lugoj', 'Romania', 'RO', '5 Delaware Pass');
 insert into address (id, city, country, county, street)
-values (9, 'Kuasha', 'China', 'CN', '4 Bashford Park');
+values (9, 'Oradea', 'Romania', 'RO', '4 Bashford Park');
 insert into address (id, city, country, county, street)
-values (10, 'Manuel Antonio Mesones Muro', 'Peru', 'PE', '027 Arkansas Point');
+values (10, 'Resita', 'Romania', 'RO', '027 Arkansas Point');
 
 insert into location (id, address_id, name)
 values (1, 1, 'Shop 1 Location');

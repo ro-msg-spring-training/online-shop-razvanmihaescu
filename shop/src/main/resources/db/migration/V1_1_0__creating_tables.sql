@@ -17,10 +17,10 @@ create table cart
 ) engine = InnoDB;
 create table location
 (
-    id         integer not null auto_increment,
-    name       varchar(255),
-    address_id integer,
-    order_id   integer,
+    id               integer not null auto_increment,
+    name             varchar(255),
+    address_id       integer,
+    order_shipped_id integer,
     primary key (id)
 ) engine = InnoDB;
 create table order_detail
@@ -94,7 +94,7 @@ alter table cart
 alter table location
     add constraint FKt8psi9b5mkkfc0r9fgptngwhg foreign key (address_id) references address (id);
 alter table location
-    add constraint FK42oskjqgbk1mivrmqwa9b7i5f foreign key (order_id) references orders (id);
+    add constraint FKrivux4rr1u71or0ruxddpyv35 foreign key (order_shipped_id) references orders (id);
 alter table order_detail
     add constraint FKrws2q0si6oyd6il8gqe2aennc foreign key (order_id) references orders (id);
 alter table orders

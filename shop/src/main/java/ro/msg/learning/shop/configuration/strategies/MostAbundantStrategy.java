@@ -31,12 +31,11 @@ public class MostAbundantStrategy implements IDeliveryStrategy {
             if (maxStock.getQuantity() < orderDetail.getQuantity())
                 throw new ProductsNotAvailableException();
 
-            StockDto element = StockDto.builder()
+            dtoToReturn.add(StockDto.builder()
                     .locationDto(ILocationMapper.INSTANCE.locationToLocationDto(maxStock.getLocation()))
                     .quantity(orderDetail.getQuantity())
                     .productDto(IProductMapper.INSTANCE.productToProductDto(maxStock.getProduct()))
-                    .build();
-            dtoToReturn.add(element);
+                    .build());
         }
         return dtoToReturn;
     }

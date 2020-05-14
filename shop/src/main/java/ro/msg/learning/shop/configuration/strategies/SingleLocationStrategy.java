@@ -48,12 +48,11 @@ public class SingleLocationStrategy implements IDeliveryStrategy {
             Stock stock = locationStock.stream().filter(element -> element.getProduct().getId().equals(order.getProductId())).findFirst().orElse(null);
             if (stock == null || stock.getQuantity() < order.getQuantity()) return false;
             else {
-                StockDto element = StockDto.builder()
+                dtoToReturn.add(StockDto.builder()
                         .locationDto(ILocationMapper.INSTANCE.locationToLocationDto(stock.getLocation()))
                         .quantity(order.getQuantity())
                         .productDto(IProductMapper.INSTANCE.productToProductDto(stock.getProduct()))
-                        .build();
-                dtoToReturn.add(element);
+                        .build());
             }
         }
         return true;

@@ -6,10 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ro.msg.learning.shop.configuration.strategies.IDeliveryStrategy;
-import ro.msg.learning.shop.configuration.strategies.MostAbundantStrategy;
-import ro.msg.learning.shop.configuration.strategies.SingleLocationStrategy;
-import ro.msg.learning.shop.configuration.strategies.StrategiesEnum;
+import ro.msg.learning.shop.configuration.strategies.*;
 
 @Data
 @Configuration
@@ -22,19 +19,20 @@ public class DeliveryStrategyConfiguration {
 
     private final MostAbundantStrategy mostAbundantStrategy;
     private final SingleLocationStrategy singleLocationStrategy;
+    private final GreedyStrategy greedyStrategy;
 
     @Bean
     public IDeliveryStrategy getDeliveryStrategy() {
         StrategiesEnum strategyValue;
-        try {
-            strategyValue = StrategiesEnum.valueOf(deliveryStrategy.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            strategyValue = StrategiesEnum.SINGLE_LOCATION;
-        }
-        if (strategyValue == StrategiesEnum.MOST_ABUNDANT) {
-            return mostAbundantStrategy;
-        } else {
-            return singleLocationStrategy;
+        strategyValue = StrategiesEnum.valueOf(deliveryStrategy.toUpperCase());
+        switch (strategyValue) {
+            case MOST_ABUNDANT:
+                return mostAbundantStrategy;
+            case GREEDY:
+                return greedyStrategy;
+
+            default:
+                return singleLocationStrategy;
         }
     }
 }

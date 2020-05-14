@@ -22,7 +22,7 @@ public class Order {
     @Column(unique = true)
     private Integer id;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "orderShipped")
     private List<Location> shippedFrom;
 
     @ManyToOne(cascade = CascadeType.ALL)
